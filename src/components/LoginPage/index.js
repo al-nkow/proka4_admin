@@ -18,6 +18,27 @@ import styled from 'styled-components';
 //   intlShape,
 // } from 'react-intl';
 
+const Wrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: url("https://www.toptal.com/designers/subtlepatterns/patterns/doodles.png");
+`;
+
+const Content = styled.div`
+  width: 400px;
+`;
+
+const LoginForm = styled.div`
+  width: 100%;
+  min-height: 300px;
+  background: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+`;
+
 
 class LoginPage extends PureComponent {
   // state = { isVerifyEmailNoticeOpened: false };
@@ -45,8 +66,12 @@ class LoginPage extends PureComponent {
     // const { isVerifyEmailNoticeOpened } = this.state;
     // const { formatMessage } = this.props.intl;
     return (
-      <div>
-        <h1>LOGIN</h1>
+      <Wrapper>
+        <Content>
+          <LoginForm>
+
+          </LoginForm>
+        </Content>
       {/*<Wrapper>*/}
         {/*<StyledLogo />*/}
         {/*<LoginForm />*/}
@@ -63,7 +88,7 @@ class LoginPage extends PureComponent {
           {/*duration={3000}*/}
         {/*/>*/}
       {/*</Wrapper>*/}
-      </div>
+      </Wrapper>
     );
   }
 }

@@ -3,6 +3,7 @@ import './App.css';
 import styled from 'styled-components'
 import {Router, Route, Switch} from 'react-router';
 import history from './history';
+import './globalStyles';
 import LoginPage from './components/LoginPage'
 
 const Block = styled.div`
