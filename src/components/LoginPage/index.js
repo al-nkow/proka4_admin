@@ -1,5 +1,13 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+
+import { Field, reduxForm } from 'redux-form';
+
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+
 // import { Link } from 'react-router-dom';
 // import { withRouter } from 'react-router';
 // import queryString from 'query-string';
@@ -32,6 +40,7 @@ const Content = styled.div`
 `;
 
 const LoginForm = styled.div`
+  padding: 20px;
   width: 100%;
   min-height: 300px;
   background: #ffffff;
@@ -41,6 +50,9 @@ const LoginForm = styled.div`
 
 
 class LoginPage extends PureComponent {
+  state = {
+    name: 'somemail@mail.com'
+  };
   // state = { isVerifyEmailNoticeOpened: false };
   //
   // handleClose = (event, reason) => {
@@ -62,13 +74,72 @@ class LoginPage extends PureComponent {
   //   }
   // }
 
+  onSubmit = values => {
+    console.log('>>>>>>', values);
+    // const { login } = this.props;
+    // return login(values).then(res => {
+    //   if (res && res.is2fa) {
+    //     this.setState({ is2faDialogOpen: true, token2fa: res.token });
+    //   }
+    // });
+  };
+
+  handleChange = name => event => {
+    this.setState({
+      [name]: event.target.value,
+    });
+  };
+
   render() {
     // const { isVerifyEmailNoticeOpened } = this.state;
     // const { formatMessage } = this.props.intl;
+    const { handleSubmit, error, submitting, valid } = this.props;
+
     return (
       <Wrapper>
         <Content>
           <LoginForm>
+            <form onSubmit={handleSubmit(this.onSubmit)}>
+              <div>
+                <Field name='password' component='input' type='text'/>
+              </div>
+
+              <div>
+
+
+
+                <Field name='email' component={props => {
+                  const {input, meta, ...rest} = props;
+                  return (
+                    <TextField
+                      {...input}
+                      {...rest}
+                      error={false}
+                      label="Адрес эл.почты"
+                      // value={props.value}
+                      margin="normal"
+                      helperText="Здесь будет сообщение об ошибке"
+                    />
+                  )
+                }} type='text'/>
+
+
+
+
+
+                
+              </div>
+
+
+
+
+
+              <div>
+                <Button type='submit' variant="contained" color="primary">
+                  Submit
+                </Button>
+              </div>
+            </form>
 
           </LoginForm>
         </Content>
@@ -98,4 +169,14 @@ class LoginPage extends PureComponent {
 // };
 // export default withRouter(injectIntl(LoginPage));
 
-export default LoginPage;
+// export default LoginPage;
+
+export default compose(
+  reduxForm({
+    form: 'loginForm',
+    fields: ['email', 'password'],
+    // validate,
+    enableReinitialize: true,
+  }),
+  // connect(null, { login })
+)(LoginPage);

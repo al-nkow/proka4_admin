@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Provider } from 'react-redux';
 import './App.css';
 import styled from 'styled-components'
 import {Router, Route, Switch} from 'react-router';
@@ -14,12 +15,15 @@ const Block = styled.div`
 
 class App extends Component {
   render() {
+    const { store } = this.props;
     return (
-      <Router history={history}>
-        <Switch>
-          <Route exact path="/login" component={LoginPage} />
-        </Switch>
-      </Router>
+      <Provider store={store()}>
+        <Router history={history}>
+          <Switch>
+            <Route exact path="/login" component={LoginPage} />
+          </Switch>
+        </Router>
+      </Provider>
     );
   }
 }
