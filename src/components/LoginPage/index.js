@@ -2,11 +2,17 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import validate from './validate';
 
 import { Field, reduxForm } from 'redux-form';
 
 import { connect } from 'react-redux';
 import { compose } from 'redux';
+
+import login from '../../redux/actions/login';
+
+import StyledTextField from '../StyledTextField';
+import StyledPasswordField from '../StyledPasswordField';
 
 // import { Link } from 'react-router-dom';
 // import { withRouter } from 'react-router';
@@ -42,10 +48,22 @@ const Content = styled.div`
 const LoginForm = styled.div`
   padding: 20px;
   width: 100%;
-  min-height: 300px;
   background: #ffffff;
   border-radius: 4px;
   box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+`;
+
+const FieldWrap = styled.div`
+  margin-bottom: 20px;
+`;
+
+const ButtonWrap = styled.div`
+  padding: 20px 0; 
+`;
+
+const StyledButton = styled(Button)`
+  font-weight: 300;
+  width: 100%;
 `;
 
 
@@ -76,7 +94,9 @@ class LoginPage extends PureComponent {
 
   onSubmit = values => {
     console.log('>>>>>>', values);
-    // const { login } = this.props;
+    const { login } = this.props;
+    login(values);
+
     // return login(values).then(res => {
     //   if (res && res.is2fa) {
     //     this.setState({ is2faDialogOpen: true, token2fa: res.token });
@@ -100,47 +120,18 @@ class LoginPage extends PureComponent {
         <Content>
           <LoginForm>
             <form onSubmit={handleSubmit(this.onSubmit)}>
-              <div>
-                <Field name='password' component='input' type='text'/>
-              </div>
-
-              <div>
-
-
-
-                <Field name='email' component={props => {
-                  const {input, meta, ...rest} = props;
-                  return (
-                    <TextField
-                      {...input}
-                      {...rest}
-                      error={false}
-                      label="Адрес эл.почты"
-                      // value={props.value}
-                      margin="normal"
-                      helperText="Здесь будет сообщение об ошибке"
-                    />
-                  )
-                }} type='text'/>
-
-
-
-
-
-                
-              </div>
-
-
-
-
-
-              <div>
-                <Button type='submit' variant="contained" color="primary">
-                  Submit
-                </Button>
-              </div>
+              <FieldWrap>
+                <Field name='email' label='Адрес эл.почты' type='text' component={StyledTextField} />
+              </FieldWrap>
+              <FieldWrap>
+                <Field name='password' label='Пароль' type='text' component={StyledPasswordField} />
+              </FieldWrap>
+              <ButtonWrap>
+                <StyledButton type='submit' variant="contained" color="primary" disabled={submitting || !valid}>
+                  Отправить
+                </StyledButton>
+              </ButtonWrap>
             </form>
-
           </LoginForm>
         </Content>
       {/*<Wrapper>*/}
@@ -175,8 +166,8 @@ export default compose(
   reduxForm({
     form: 'loginForm',
     fields: ['email', 'password'],
-    // validate,
+    validate,
     enableReinitialize: true,
   }),
-  // connect(null, { login })
+  connect(null, { login })
 )(LoginPage);
