@@ -1,18 +1,18 @@
+import { loginUser } from '../services/auth';
+
+// admin@admin.com admin
+
+
 const login = ({ email, password }) => dispatch => {
   console.log('>>>>>>>> LOGIN >>>>>>', email, password);
   // dispatch(loginRequest());
-  // return loginUser(email, password)
-  //   .then(({ data }) => {
-  //     if (data && data.is2fa) {
-  //       dispatch({
-  //         type: SET_TWOFA_TOKEN,
-  //         payload: {
-  //           token: data.token,
-  //           expires: data.expires,
-  //         },
-  //       });
-  //       return data;
-  //     }
+  return loginUser(email, password)
+    // .then(({ data }) => {
+    .then((result) => {
+      const { data } = result;
+
+      console.log('LOGIN RESULT: ', data);
+
   //     dispatch(loginSuccess());
   //     if (data) {
   //       saveToken(data.token);
@@ -30,15 +30,17 @@ const login = ({ email, password }) => dispatch => {
   //           console.log(err);
   //         });
   //     }
-  //   })
-  //   .catch(({ response }) => {
-  //     dispatch(loginFail());
-  //     let data = { ...response.data };
-  //     if (data.statusCode === 400) {
-  //       data.message = "Current login/password isn't correct";
-  //     }
-  //     throw new SubmissionError(normalizeErrors(data));
-  //   });
+    })
+    // .catch(({ response }) => {
+    .catch((error) => {
+      // dispatch(loginFail());
+      // let data = { ...response.data };
+      // if (data.statusCode === 400) {
+      //   data.message = "Current login/password isn't correct";
+      // }
+      // throw new SubmissionError(normalizeErrors(data));
+      console.log('LOGIN FAILED: ', error);
+    });
 };
 
 export default login;

@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import './App.css';
-import styled from 'styled-components'
 import {Router, Route, Switch} from 'react-router';
 import history from './history';
 import './globalStyles';
 import LoginPage from './components/LoginPage'
+import createApiInstance from './utils/api';
 
-const Block = styled.div`
-  padding: 20px;
-  border: 1px solid red;
-  margin: 20px;
-`;
+createApiInstance();
 
 class App extends Component {
   render() {

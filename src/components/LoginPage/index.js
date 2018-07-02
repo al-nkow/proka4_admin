@@ -38,7 +38,12 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: url("https://www.toptal.com/designers/subtlepatterns/patterns/doodles.png");
+  //background: url("https://www.toptal.com/designers/subtlepatterns/patterns/doodles.png");
+  background: -webkit-linear-gradient(359deg, rgb(243, 92, 75) 0%, rgb(248, 131, 121) 60%, rgb(247, 125, 112) 100%);
+  background: -o-linear-gradient(359deg, rgb(243, 92, 75) 0%, rgb(248, 131, 121) 60%, rgb(247, 125, 112) 100%);
+  background: -ms-linear-gradient(359deg, rgb(243, 92, 75) 0%, rgb(248, 131, 121) 60%, rgb(247, 125, 112) 100%);
+  background: -moz-linear-gradient(359deg, rgb(243, 92, 75) 0%, rgb(248, 131, 121) 60%, rgb(247, 125, 112) 100%);
+  background: linear-gradient(91deg, rgb(243, 92, 75) 0%, rgb(248, 131, 121) 60%, rgb(247, 125, 112) 100%);
 `;
 
 const Content = styled.div`
