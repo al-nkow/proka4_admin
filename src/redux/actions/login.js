@@ -1,10 +1,11 @@
 import { loginUser } from '../services/auth';
+import { saveToken } from '../../utils/api';
+import history from '../../history';
 
 // admin@admin.com admin
-
+// work: test@test.com test
 
 const login = ({ email, password }) => dispatch => {
-  console.log('>>>>>>>> LOGIN >>>>>>', email, password);
   // dispatch(loginRequest());
   return loginUser(email, password)
     // .then(({ data }) => {
@@ -14,8 +15,10 @@ const login = ({ email, password }) => dispatch => {
       console.log('LOGIN RESULT: ', data);
 
   //     dispatch(loginSuccess());
-  //     if (data) {
-  //       saveToken(data.token);
+      if (data) {
+        saveToken(data.token);
+        history.push('/');
+
   //       saveUserRole(data.role);
   //       return dispatch(loadCurrentUserData())
   //         .then(res => {
@@ -29,7 +32,7 @@ const login = ({ email, password }) => dispatch => {
   //         .catch(err => {
   //           console.log(err);
   //         });
-  //     }
+      }
     })
     // .catch(({ response }) => {
     .catch((error) => {

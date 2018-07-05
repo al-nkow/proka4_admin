@@ -6,6 +6,9 @@ import history from './history';
 import './globalStyles';
 import LoginPage from './components/LoginPage'
 import createApiInstance from './utils/api';
+import PrivateRoute from './components/PrivateRoute';
+import AppContainer from './components/AppContainer';
+import UsersPage from './components/UsersPage';
 
 createApiInstance();
 
@@ -17,6 +20,12 @@ class App extends Component {
         <Router history={history}>
           <Switch>
             <Route exact path="/login" component={LoginPage} />
+            <PrivateRoute component={AppContainer}>
+              <Switch>
+                <Route exact path="/" component={() => (<div>test</div>)} />
+                <Route exact path="/users" component={UsersPage} />
+              </Switch>
+            </PrivateRoute>
           </Switch>
         </Router>
       </Provider>

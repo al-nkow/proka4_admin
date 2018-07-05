@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import TextField from '@material-ui/core/TextField';
+// import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import validate from './validate';
 
@@ -39,11 +39,11 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   //background: url("https://www.toptal.com/designers/subtlepatterns/patterns/doodles.png");
-  background: -webkit-linear-gradient(359deg, rgb(243, 92, 75) 0%, rgb(248, 131, 121) 60%, rgb(247, 125, 112) 100%);
-  background: -o-linear-gradient(359deg, rgb(243, 92, 75) 0%, rgb(248, 131, 121) 60%, rgb(247, 125, 112) 100%);
-  background: -ms-linear-gradient(359deg, rgb(243, 92, 75) 0%, rgb(248, 131, 121) 60%, rgb(247, 125, 112) 100%);
-  background: -moz-linear-gradient(359deg, rgb(243, 92, 75) 0%, rgb(248, 131, 121) 60%, rgb(247, 125, 112) 100%);
-  background: linear-gradient(91deg, rgb(243, 92, 75) 0%, rgb(248, 131, 121) 60%, rgb(247, 125, 112) 100%);
+  //background: -webkit-linear-gradient(359deg, rgb(243, 92, 75) 0%, rgb(248, 131, 121) 60%, rgb(247, 125, 112) 100%);
+  //background: -o-linear-gradient(359deg, rgb(243, 92, 75) 0%, rgb(248, 131, 121) 60%, rgb(247, 125, 112) 100%);
+  //background: -ms-linear-gradient(359deg, rgb(243, 92, 75) 0%, rgb(248, 131, 121) 60%, rgb(247, 125, 112) 100%);
+  //background: -moz-linear-gradient(359deg, rgb(243, 92, 75) 0%, rgb(248, 131, 121) 60%, rgb(247, 125, 112) 100%);
+  //background: linear-gradient(91deg, rgb(243, 92, 75) 0%, rgb(248, 131, 121) 60%, rgb(247, 125, 112) 100%);
 `;
 
 const Content = styled.div`
@@ -119,6 +119,7 @@ class LoginPage extends PureComponent {
     // const { isVerifyEmailNoticeOpened } = this.state;
     // const { formatMessage } = this.props.intl;
     const { handleSubmit, error, submitting, valid } = this.props;
+    console.log(error);
 
     return (
       <Wrapper>
