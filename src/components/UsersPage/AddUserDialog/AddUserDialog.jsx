@@ -24,8 +24,13 @@ class SimpleDialog extends React.Component {
     open: false,
   };
 
-  submitForm = (values) => {
-    this.props.signupNewUser(values);
+  submitForm = async (values) => {
+    try {
+      const result = await this.props.signupNewUser(values);
+      console.log('TRYCATCH RESULT: ', result);
+    } catch(error) {
+      console.log('TRYCATCH ERROR: ', error.response);
+    }
   };
 
   handleClickOpen = () => {

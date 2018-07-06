@@ -30,9 +30,5 @@ export const signupNewUser = data => dispatch => {
       // dispatch({ type: SET_USERS, payload: res.data });
       dispatch(getUsersList());
       return res;
-    })
-    .catch(err => {
-      // dispatch({ type: GET_USERS_FAIL });
-      console.log('SIGNUP USER ERROR: ', err.response);
     });
 };
