@@ -7,10 +7,13 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+// import Button from '@material-ui/core/Button';
 import { getUsersList } from '../../redux/actions/users';
+import AddUserDialog from './AddUserDialog';
 
 const TableWrap = styled.div`
   max-width: 600px;
+  margin-bottom: 40px;
 `;
 
 const PageHead = styled.div`
@@ -20,11 +23,20 @@ const PageHead = styled.div`
 
 class UsersPage extends PureComponent {
 
+  state = {
+    addUserDialogOpen: false
+  };
+
   componentDidMount() {
     this.props.getUsersList()
   }
 
+  handleAddUserDialogClose = () => {
+    this.setState({ addUserDialogOpen: false });
+  };
+
   render() {
+    const { addUserDialogOpen } = this.state;
     const { usersList } = this.props;
     return (
       <Fragment>
@@ -61,6 +73,7 @@ class UsersPage extends PureComponent {
             ) : (<div>Нет данных</div>)
           }
         </TableWrap>
+        <AddUserDialog />
       </Fragment>
     )
   }

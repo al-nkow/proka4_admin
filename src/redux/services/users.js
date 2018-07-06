@@ -4,3 +4,8 @@ export const getAllUsers = data =>
   axios.get('/user', {
     params: data,
   });
+
+export const signupUser = data => {
+  return axios.post(`/user/signup`, data);
+};
+
