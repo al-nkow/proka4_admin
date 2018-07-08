@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
+import MenuItem from './MenuItem';
 
 const Wrap = styled.div`
   box-sizing: border-box;
@@ -21,18 +22,22 @@ const Sidebar = styled.div`
   box-shadow: 0 0 10px rgba(0,0,0,0.4);
 `;
 
-const MenuItem = styled.div`
-  color: #ffffff;
-  font-size: 14px;
-  font-weight: 400;
-  padding: 20px 30px;
-  text-transform: uppercase;
-`;
-
 const Content = styled.div`
   padding: 40px;
   width: 100%;
   background: #F6F6F6;
+`;
+
+const SidebarHead = styled.div`
+  padding: 20px;
+  span {
+    display: block;
+    padding: 10px;
+    border-bottom: 1px solid #cccccc;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 300;
+  }
 `;
 
 class AppContainer extends PureComponent {
@@ -50,8 +55,9 @@ class AppContainer extends PureComponent {
     return (
       <Wrap>
         <Sidebar>
-          <MenuItem>Логин</MenuItem>
-          <MenuItem>Пользователи</MenuItem>
+          <SidebarHead><span>Административная панель</span></SidebarHead>
+          <MenuItem name="Контент" icon="create" />
+          <MenuItem name="Пользователи"  icon="people" />
         </Sidebar>
         <Content>{this.props.children}</Content>
       </Wrap>

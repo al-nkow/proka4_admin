@@ -1,23 +1,16 @@
 import { createMuiTheme } from '@material-ui/core/styles';
-// import {
-//   primary,
-//   error,
-//   white,
-//   text,
-//   row,
-//   green2,
-//   light,
-// } from './shared/colors';
+import {
+  primary,
+  error,
+  white
+} from './utils/colors';
 
 export default createMuiTheme({
   palette: {
-    primary: {
-      main: '#616daf',
-      light: '#8697C8',
-      dark: '#3B4F91',
-    },
-    // error,
-    // white,
+    // type: 'dark',
+    primary,
+    error,
+    white,
   },
   overrides: {
   //   a: {
@@ -112,7 +105,7 @@ export default createMuiTheme({
       root: {
         '&$disabled': {
           opacity: 0.5,
-          backgroundColor: `#616daf !important`,
+          backgroundColor: `${primary.main} !important`,
           color: '#ffffff !important'
         },
       },
