@@ -38,12 +38,12 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  //background: url("https://www.toptal.com/designers/subtlepatterns/patterns/doodles.png");
-  //background: -webkit-linear-gradient(359deg, rgb(243, 92, 75) 0%, rgb(248, 131, 121) 60%, rgb(247, 125, 112) 100%);
-  //background: -o-linear-gradient(359deg, rgb(243, 92, 75) 0%, rgb(248, 131, 121) 60%, rgb(247, 125, 112) 100%);
-  //background: -ms-linear-gradient(359deg, rgb(243, 92, 75) 0%, rgb(248, 131, 121) 60%, rgb(247, 125, 112) 100%);
-  //background: -moz-linear-gradient(359deg, rgb(243, 92, 75) 0%, rgb(248, 131, 121) 60%, rgb(247, 125, 112) 100%);
-  //background: linear-gradient(91deg, rgb(243, 92, 75) 0%, rgb(248, 131, 121) 60%, rgb(247, 125, 112) 100%);
+  background: url("https://www.toptal.com/designers/subtlepatterns/patterns/doodles.png");
+  background: -webkit-linear-gradient(359deg, rgb(243, 92, 75) 0%, rgb(248, 131, 121) 60%, rgb(247, 125, 112) 100%);
+  background: -o-linear-gradient(359deg, rgb(243, 92, 75) 0%, rgb(248, 131, 121) 60%, rgb(247, 125, 112) 100%);
+  background: -ms-linear-gradient(359deg, rgb(243, 92, 75) 0%, rgb(248, 131, 121) 60%, rgb(247, 125, 112) 100%);
+  background: -moz-linear-gradient(359deg, rgb(243, 92, 75) 0%, rgb(248, 131, 121) 60%, rgb(247, 125, 112) 100%);
+  background: linear-gradient(91deg, rgb(243, 92, 75) 0%, rgb(248, 131, 121) 60%, rgb(247, 125, 112) 100%);
 `;
 
 const Content = styled.div`
@@ -71,9 +71,16 @@ const StyledButton = styled(Button)`
   width: 100%;
 `;
 
+const ErrorMessage = styled.div`
+  color: red;
+  font-size: 14px;
+  padding: 10px 0;
+`;
+
 
 class LoginPage extends PureComponent {
   state = {
+    loginError: '',
     name: 'somemail@mail.com'
   };
   // state = { isVerifyEmailNoticeOpened: false };
@@ -97,16 +104,19 @@ class LoginPage extends PureComponent {
   //   }
   // }
 
-  onSubmit = values => {
-    console.log('>>>>>>', values);
-    const { login } = this.props;
-    login(values);
+  showError = (status) => {
+    let error = 'Вход в систему невозможен. Ошибка сервера.';
+    if (status === 401) error = 'Вход в систему невозможен. Проверьте правильность адреса эл. почты и пароля.';
+    this.setState({ loginError: error });
+    setTimeout(() => { this.setState({ loginError: '' }); }, 3000);
+  };
 
-    // return login(values).then(res => {
-    //   if (res && res.is2fa) {
-    //     this.setState({ is2faDialogOpen: true, token2fa: res.token });
-    //   }
-    // });
+  onSubmit = values => {
+    const { login } = this.props;
+    login(values).catch((err) => {
+      console.log('LOGIN ERROR: ', err.response);
+      this.showError(err.response.status);
+    });
   };
 
   handleChange = name => event => {
@@ -116,16 +126,15 @@ class LoginPage extends PureComponent {
   };
 
   render() {
-    // const { isVerifyEmailNoticeOpened } = this.state;
-    // const { formatMessage } = this.props.intl;
+    const { loginError } = this.state;
     const { handleSubmit, error, submitting, valid } = this.props;
-    console.log(error);
 
     return (
       <Wrapper>
         <Content>
           <LoginForm>
             <form onSubmit={handleSubmit(this.onSubmit)}>
+              {loginError && <ErrorMessage>{loginError}</ErrorMessage>}
               <FieldWrap>
                 <Field name='email' label='Адрес эл.почты' type='text' component={StyledTextField} />
               </FieldWrap>

@@ -33,17 +33,17 @@ const login = ({ email, password }) => dispatch => {
   //           console.log(err);
   //         });
       }
-    })
-    // .catch(({ response }) => {
-    .catch((error) => {
-      // dispatch(loginFail());
-      // let data = { ...response.data };
-      // if (data.statusCode === 400) {
-      //   data.message = "Current login/password isn't correct";
-      // }
-      // throw new SubmissionError(normalizeErrors(data));
-      console.log('LOGIN FAILED: ', error);
     });
+    // .catch(({ response }) => {
+    // .catch((error) => {
+    //   // dispatch(loginFail());
+    //   // let data = { ...response.data };
+    //   // if (data.statusCode === 400) {
+    //   //   data.message = "Current login/password isn't correct";
+    //   // }
+    //   // throw new SubmissionError(normalizeErrors(data));
+    //   console.log('LOGIN FAILED: ', error);
+    // });
 };
 
 export default login;

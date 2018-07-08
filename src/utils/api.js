@@ -31,7 +31,7 @@ export default () => {
     //   localStorage.clear();
     //   store.dispatch({ type: UNAUTH_USER });
     // }
-    if (error.status === 401) {
+    if (error && error.response && error.response.status === 401) {
       localStorage.clear();
       history.push('/login');
     }
