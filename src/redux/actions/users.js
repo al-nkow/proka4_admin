@@ -25,7 +25,6 @@ export const signupNewUser = data => dispatch => {
   // dispatch({ type: GET_USERS_REQUEST });
   return signupUser(data)
     .then(res => {
-      console.log('SDD USER RESULT: ', res);
       // dispatch({ type: GET_USERS_SUCCESS });
       // dispatch({ type: SET_USERS, payload: res.data });
       dispatch(getUsersList());

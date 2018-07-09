@@ -12,6 +12,7 @@ import theme from './theme';
 
 // Pages
 import UsersPage from './components/UsersPage';
+import ContentPage from './components/ContentPage';
 
 createApiInstance();
 
@@ -26,7 +27,8 @@ class App extends Component {
               <Route exact path="/login" component={LoginPage} />
               <PrivateRoute component={AppContainer}>
                 <Switch>
-                  <Route exact path="/" component={() => (<div>test</div>)} />
+                  <Route exact path="/" component={() => (<div>раздел находится в разработке</div>)} />
+                  <Route exact path="/content" component={ContentPage} />
                   <Route exact path="/users" component={UsersPage} />
                 </Switch>
               </PrivateRoute>
