@@ -1,35 +1,66 @@
 import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { Field, reduxForm, SubmissionError } from 'redux-form';
+import { Field, reduxForm, reset } from 'redux-form';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import validate from "../../LoginPage/validate";
-import StyledPasswordField from "../../StyledPasswordField";
 import StyledTextField from "../../StyledTextField";
 import styled from 'styled-components';
 import { signupNewUser } from '../../../redux/actions/users';
+import Toast from '../../Toast';
 
 const FieldWrap = styled.div`
   margin-bottom: 20px;
 `;
 
-class SimpleDialog extends React.Component {
+const StyledDialogTitle = styled(DialogTitle)`
+  && {
+    h2 {
+      font-size: 20px;
+      color: #333333;
+      font-weight: 400;
+    }
+  }
+`;
+
+class AddUserDialog extends React.Component {
   state = {
     open: false,
+    openToast: false,
+    toastMessage: '',
+    toastType: ''
+  };
+
+  handleCloseToast = () => {
+    this.setState({
+      openToast: false,
+      toastType: '',
+      toastMessage: ''
+    });
   };
 
   submitForm = async (values) => {
     try {
-      const result = await this.props.signupNewUser(values);
-      console.log('TRYCATCH RESULT: ', result);
+      await this.props.signupNewUser(values);
+      this.setState({
+        toastType: 'success',
+        toastMessage: 'Пользователь успешно добавлен в систему',
+        openToast: true,
+        open: false
+      });
+      this.props.dispatch(reset('addUserForm'));
     } catch(error) {
-      console.log('TRYCATCH ERROR: ', error.response);
+      console.log('SIGN UP NEW USER ERROR: ', error.response);
+      this.setState({
+        toastType: 'alert',
+        toastMessage: 'Ошибка при попытке создать пользователя',
+        openToast: true,
+        open: false
+      });
     }
   };
 
@@ -39,35 +70,42 @@ class SimpleDialog extends React.Component {
 
   handleClose = () => {
     this.setState({ open: false });
+    this.props.dispatch(reset('addUserForm'));
   };
 
   render() {
-
     const {
       handleSubmit,
       submitting,
-      dirty,
       valid,
+      dirty,
     } = this.props;
 
+    const { openToast, toastMessage, toastType } = this.state;
 
     return (
       <div>
-        {/*<Button onClick={this.handleClickOpen}>Open form dialog</Button>*/}
         <Button variant="contained" color="primary" onClick={this.handleClickOpen}>
           Добавить пользователя
         </Button>
+        <Toast
+          type={toastType}
+          title={toastMessage}
+          open={openToast}
+          handleClose={this.handleCloseToast}
+          duration={2000}
+        />
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
           aria-labelledby="form-dialog-title"
         >
           <form onSubmit={handleSubmit(this.submitForm)}>
-            <DialogTitle id="form-dialog-title">Add new user</DialogTitle>
+            <StyledDialogTitle id="form-dialog-title">Добавить пользователя в систему</StyledDialogTitle>
             <DialogContent>
-              <DialogContentText>
-                Some text here some text here some text here some text here some text here some text here
-              </DialogContentText>
+              {/*<DialogContentText>*/}
+                {/*Заполните поля ниже чтобы добавить пользователя в систему.*/}
+              {/*</DialogContentText>*/}
                 <FieldWrap>
                   <Field name='email' label='Адрес эл.почты' type='text' component={StyledTextField} />
                 </FieldWrap>
@@ -77,10 +115,10 @@ class SimpleDialog extends React.Component {
             </DialogContent>
             <DialogActions>
               <Button onClick={this.handleClose} color="primary">
-                Cancel
+                Отмена
               </Button>
-              <Button type="submit" color="primary">
-                Add user
+              <Button type="submit" color="primary" disabled={!dirty || submitting || !valid}>
+                Сохранить
               </Button>
             </DialogActions>
           </form>
@@ -90,16 +128,9 @@ class SimpleDialog extends React.Component {
   }
 }
 
-// export default SimpleDialog;
-
 export default compose(
   connect(
     null,
-    // (state, ownProps) => ({
-    //   initialValues: {
-    //     description: ownProps.data ? ownProps.data.description : '',
-    //   },
-    // }),
     { signupNewUser }
   ),
   reduxForm({
@@ -107,4 +138,4 @@ export default compose(
     validate,
     enableReinitialize: true,
   })
-)(SimpleDialog);
+)(AddUserDialog);

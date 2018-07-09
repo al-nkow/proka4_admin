@@ -9,3 +9,7 @@ export const signupUser = data => {
   return axios.post(`/user/signup`, data);
 };
 
+export const deleteUser = id => {
+  return axios.delete(`/user/${id}`);
+};
+

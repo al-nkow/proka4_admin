@@ -9,9 +9,13 @@ export const error = {
   dark: '#c40010',
   background: '#FFD7D4',
 };
-export const white = {
-  main: '#ffffff',
-};
+// export const white = {
+//   main: '#ffffff',
+// };
 
 // #fff6e1
+
+export default {
+  green: '#2EA664'
+}
 

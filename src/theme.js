@@ -2,7 +2,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import {
   primary,
   error,
-  white
+  // white
 } from './utils/colors';
 
 export default createMuiTheme({
@@ -10,7 +10,7 @@ export default createMuiTheme({
     // type: 'dark',
     primary,
     error,
-    white,
+    // white,
   },
   overrides: {
   //   a: {
@@ -43,12 +43,13 @@ export default createMuiTheme({
   //       },
   //     },
   //   },
-  //   MuiTooltip: {
-  //     tooltip: {
-  //       fontSize: '12px!important',
-  //       backgroundColor: 'rgba(33, 33, 33, 0.85)',
-  //     },
-  //   },
+    MuiTooltip: {
+      tooltip: {
+        fontSize: '12px!important',
+        fontWeight: '300',
+        backgroundColor: 'rgba(33, 33, 33, 0.85)',
+      },
+    },
   //   MuiTableRow: {
   //     root: {
   //       height: '80px',

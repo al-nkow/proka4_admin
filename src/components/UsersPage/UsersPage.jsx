@@ -7,12 +7,16 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-// import Button from '@material-ui/core/Button';
-import { getUsersList } from '../../redux/actions/users';
+import Icon from '@material-ui/core/Icon';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
+import { getUsersList, removeUser } from '../../redux/actions/users';
+import Toast from '../Toast';
+import ConfirmActionDialog from '../ConfirmActionDialog';
 import AddUserDialog from './AddUserDialog';
 
 const TableWrap = styled.div`
-  max-width: 600px;
+  max-width: 800px;
   margin-bottom: 40px;
 `;
 
@@ -21,25 +25,75 @@ const PageHead = styled.div`
   padding: 10px;
 `;
 
+const StyledTable = styled(Table)`
+  width: 100%;
+`;
+
 class UsersPage extends PureComponent {
 
   state = {
-    addUserDialogOpen: false
+    userToDelete: '',
+    openToast: false
   };
 
   componentDidMount() {
     this.props.getUsersList()
   }
 
-  handleAddUserDialogClose = () => {
-    this.setState({ addUserDialogOpen: false });
+  handleConfirmActionDialogClose = () => {
+    this.setState({ userToDelete: '' });
+  };
+
+  handleCloseToast = () => {
+    this.setState({
+      openToast: false,
+      toastType: '',
+      toastMessage: ''
+    });
+  };
+
+  deleteUserButtonClick = (n) => {
+    this.setState({ userToDelete: n });
+  };
+
+  deleteUser = async () => {
+    try {
+      await this.props.removeUser(this.state.userToDelete._id);
+      this.setState({
+        toastType: 'success',
+        toastMessage: 'Пользователь успешно удалён',
+        openToast: true,
+        userToDelete: ''
+      });
+    } catch(error) {
+      console.log('DELETE USER ERROR: ', error);
+      this.setState({
+        toastType: 'alert',
+        toastMessage: 'Ошибка при удалении пользователя',
+        openToast: true,
+        userToDelete: ''
+      });
+    }
   };
 
   render() {
-    const { addUserDialogOpen } = this.state;
+    const { userToDelete, openToast, toastMessage, toastType } = this.state;
     const { usersList } = this.props;
     return (
       <Fragment>
+        <Toast
+          type={toastType}
+          title={toastMessage}
+          open={openToast}
+          handleClose={this.handleCloseToast}
+          duration={2000}
+        />
+        <ConfirmActionDialog
+          message={`Вы действительно хотите удалить пользователя ${userToDelete.email}?`}
+          open={!!userToDelete}
+          onCloseHandler={this.handleConfirmActionDialogClose}
+          action={this.deleteUser}
+        />
         <PageHead>
           Users
         </PageHead>
@@ -47,12 +101,13 @@ class UsersPage extends PureComponent {
           {
             usersList ? (
               <Paper>
-                <Table>
+                <StyledTable>
                   <TableHead>
                     <TableRow>
                       <TableCell />
                       <TableCell>ID</TableCell>
                       <TableCell numeric>Email</TableCell>
+                      <TableCell />
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -64,11 +119,22 @@ class UsersPage extends PureComponent {
                             {n._id}
                           </TableCell>
                           <TableCell numeric>{n.email}</TableCell>
+                          <TableCell numeric>
+                            {
+                              n.email === 'admin@admin.com' ? '' : (
+                                <IconButton aria-label="Delete" onClick={() => this.deleteUserButtonClick(n)}>
+                                  <Tooltip title="Удалить пользователя" enterDelay={500} placement="left">
+                                    <Icon>delete</Icon>
+                                  </Tooltip>
+                                </IconButton>
+                              )
+                            }
+                          </TableCell>
                         </TableRow>
                       );
                     })}
                   </TableBody>
-                </Table>
+                </StyledTable>
               </Paper>
             ) : (<div>Нет данных</div>)
           }
@@ -77,11 +143,10 @@ class UsersPage extends PureComponent {
       </Fragment>
     )
   }
-
 }
 
 const mapStateToProps = state => ({
   usersList: state.users && state.users.list ? state.users.list : null
 });
 
-export default connect(mapStateToProps, { getUsersList })(UsersPage);
+export default connect(mapStateToProps, { getUsersList, removeUser })(UsersPage);
