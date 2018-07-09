@@ -23,14 +23,11 @@ const Toast = props => {
       open={props.open}
       autoHideDuration={props.duration}
       onClose={props.handleClose}
-      SnackbarContentProps={{
-        'aria-describedby': 'message-id',
-      }}
       message={
         props.type === 'alert' ? (
-          <MsgAlert id="message-id">{props.title}</MsgAlert>
+          <MsgAlert>{props.title}</MsgAlert>
         ) : (
-          <Msg id="message-id">{props.title}</Msg>
+          <Msg>{props.title}</Msg>
         )
       }
       action={[

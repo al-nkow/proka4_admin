@@ -55,9 +55,10 @@ class AddUserDialog extends React.Component {
       this.props.dispatch(reset('addUserForm'));
     } catch(error) {
       console.log('SIGN UP NEW USER ERROR: ', error.response);
+      const errMsg = error.response && error.response.status === 409 ? 'Пользователь с таким email уже есть в системе' : 'Ошибка при попытке создать пользователя';
       this.setState({
         toastType: 'alert',
-        toastMessage: 'Ошибка при попытке создать пользователя',
+        toastMessage: errMsg,
         openToast: true,
         open: false
       });
