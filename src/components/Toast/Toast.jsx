@@ -9,6 +9,7 @@ import colors, { error } from '../../utils/colors';
 export const Msg = styled.span`
   color: ${colors.green};
 `;
+
 export const MsgAlert = styled.span`
   color: ${error.main};
 `;

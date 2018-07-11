@@ -30,14 +30,15 @@ const StyledTable = styled(Table)`
 `;
 
 class UsersPage extends PureComponent {
-
   state = {
     userToDelete: '',
     openToast: false
   };
 
   componentDidMount() {
-    this.props.getUsersList()
+    // TODO: add error handler (loading FAIL)
+    if (this.props.usersList && this.props.usersList.length) return;
+    this.props.getUsersList();
   }
 
   handleConfirmActionDialogClose = () => {

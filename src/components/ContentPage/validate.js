@@ -1,15 +1,16 @@
-import { isValidEmail } from '../../utils/validationRules';
 export default values => {
-  const errors = {};
+  const errors = {
+    main: {},
+    about: {}
+  };
 
-  if (!values.email) {
-    errors.email = 'Это поле обязательно для заполнения';
-  } else if (!isValidEmail(values.email)) {
-    errors.email = 'Неправильный формат';
+  if (values.main && !values.main.info) {
+    errors.main.info = 'Это поле обязательно для заполнения';
   }
 
-  if (!values.password) {
-    errors.password = 'Это поле обязательно для заполнения';
+  if (values.about && !values.about.info) {
+    errors.about.info = 'Это поле обязательно для заполнения';
   }
+
   return errors;
 };

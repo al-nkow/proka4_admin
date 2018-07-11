@@ -3,33 +3,17 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { Field, reduxForm, reset } from 'redux-form';
 import styled from 'styled-components';
-import Table from '@material-ui/core/Table';
-// import TableBody from '@material-ui/core/TableBody';
-// import TableCell from '@material-ui/core/TableCell';
-// import TableHead from '@material-ui/core/TableHead';
-// import TableRow from '@material-ui/core/TableRow';
+import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
-// import Icon from '@material-ui/core/Icon';
-// import IconButton from '@material-ui/core/IconButton';
-// import Tooltip from '@material-ui/core/Tooltip';
-import { getUsersList, removeUser } from '../../redux/actions/users';
-// import Toast from '../Toast';
-// import ConfirmActionDialog from '../ConfirmActionDialog';
-// import AddUserDialog from './AddUserDialog';
+import { saveSiteContent, getSiteContent } from '../../redux/actions/content';
+import Toast from '../Toast';
 import validate from './validate';
-
-const TableWrap = styled.div`
-  max-width: 800px;
-  margin-bottom: 40px;
-`;
+import StyledTextField from '../StyledTextField';
+import { error } from '../../utils/colors';
 
 const PageHead = styled.div`
   height: 40px;
   padding: 10px;
-`;
-
-const StyledTable = styled(Table)`
-  width: 100%;
 `;
 
 const StyledPaper = styled(Paper)`
@@ -44,87 +28,127 @@ const Title = styled.div`
   margin-bottom: 20px;
 `;
 
-class ContentPage extends PureComponent {
+const FormRow = styled.div`
+  margin-bottom: 20px;
+`;
 
+const Error = styled.div`
+  padding: 10px;
+  color: ${error.main};
+`;
+
+class ContentPage extends PureComponent {
   state = {
     userToDelete: '',
     openToast: false
   };
 
   componentDidMount() {
-    this.props.getUsersList()
+    if (this.props.content && this.props.content._id) return;
+    this.props.getSiteContent();
   }
 
-  submitForm = (values) => {
-    console.log('>>>>>>', values);
+  submitForm = async (values) => {
+    try {
+      await this.props.saveSiteContent(values);
+      this.setState({
+        toastType: 'success',
+        toastMessage: 'Контент успешно обновлен',
+        openToast: true,
+        open: false
+      });
+      this.props.dispatch(reset('addUserForm'));
+    } catch(error) {
+      console.log('SAVE CONTENT ERROR: ', error.response);
+      this.setState({
+        toastType: 'alert',
+        toastMessage: 'Ошибка системы',
+        openToast: true,
+        open: false
+      });
+    }
   };
 
   render() {
-    const { userToDelete, openToast, toastMessage, toastType } = this.state;
-    const { usersList, handleSubmit } = this.props;
+    const { openToast, toastMessage, toastType } = this.state;
+    const { handleSubmit, dirty, submitting, valid, loadingStatus } = this.props;
     return (
       <Fragment>
+        <Toast
+          type={toastType}
+          title={toastMessage}
+          open={openToast}
+          handleClose={this.handleCloseToast}
+          duration={2000}
+        />
         <PageHead>
           Контент
         </PageHead>
-
-
-
-
-
-
-
-        <form onSubmit={handleSubmit(this.submitForm)}>
-          <StyledPaper>
-            <Title>Главный блок</Title>
-          </StyledPaper>
-          <StyledPaper>
-            <Title>О проекте</Title>
-          </StyledPaper>
-        </form>
-
-
-
-
-
-
-
-
-
-
-
-
-        {/*<Toast*/}
-          {/*type={toastType}*/}
-          {/*title={toastMessage}*/}
-          {/*open={openToast}*/}
-          {/*handleClose={this.handleCloseToast}*/}
-          {/*duration={2000}*/}
-        {/*/>*/}
-        {/*<ConfirmActionDialog*/}
-          {/*message={`Вы действительно хотите удалить пользователя ${userToDelete.email}?`}*/}
-          {/*open={!!userToDelete}*/}
-          {/*onCloseHandler={this.handleConfirmActionDialogClose}*/}
-          {/*action={this.deleteUser}*/}
-        {/*/>*/}
-        {/*<PageHead>*/}
-          {/*Users*/}
-        {/*</PageHead>*/}
-
-        {/*<AddUserDialog />*/}
+        {
+          loadingStatus === 'FAIL' ? (<Error>Ошибка при загрузке контента</Error>) : (
+            <form onSubmit={handleSubmit(this.submitForm)}>
+              <StyledPaper>
+                <Title>Главный блок</Title>
+                <FormRow>
+                  <Field
+                    name="main.info"
+                    label="Информация"
+                    type="text"
+                    fieldProps={{
+                      multiline: true,
+                      inputProps: { maxLength: 1000 },
+                    }}
+                    component={StyledTextField}
+                  />
+                </FormRow>
+              </StyledPaper>
+              <StyledPaper>
+                <Title>О проекте</Title>
+                <FormRow>
+                  <Field
+                    name="about.info"
+                    label="Информация"
+                    type="text"
+                    fieldProps={{
+                      multiline: true,
+                      inputProps: { maxLength: 1000 },
+                    }}
+                    component={StyledTextField}
+                  />
+                </FormRow>
+              </StyledPaper>
+              <Button type="submit" variant="contained"  color="primary" disabled={!dirty || submitting || !valid}>
+                Сохранить
+              </Button>
+            </form>
+          )
+        }
       </Fragment>
     )
   }
 }
 
+const checkContent = (state, name) => {
+  return state.content && state.content.content && state.content.content[name];
+};
+
 const mapStateToProps = state => ({
-  usersList: state.users && state.users.list ? state.users.list : null
+  content: state.content ? state.content.content : {},
+  loadingStatus: state.content ? state.content.loadingStatus : '',
+  initialValues: {
+    main: {
+      info: checkContent(state, 'main') ? state.content.content.main.info : ''
+    },
+    about: {
+      info: checkContent(state, 'about') ? state.content.content.about.info : ''
+    }
+  }
 });
 
 export default compose(
   connect(
     mapStateToProps,
-    { getUsersList, removeUser }
+    { saveSiteContent, getSiteContent }
   ),
   reduxForm({
     form: 'contentForm',
