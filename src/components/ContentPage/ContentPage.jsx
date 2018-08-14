@@ -48,14 +48,21 @@ class ContentPage extends PureComponent {
     this.props.getSiteContent();
   }
 
+  handleCloseToast = () => {
+    this.setState({
+      openToast: false,
+      toastType: '',
+      toastMessage: ''
+    });
+  };
+
   submitForm = async (values) => {
     try {
       await this.props.saveSiteContent(values);
       this.setState({
         toastType: 'success',
         toastMessage: 'Контент успешно обновлен',
-        openToast: true,
-        open: false
+        openToast: true
       });
       this.props.dispatch(reset('addUserForm'));
     } catch(error) {
@@ -63,8 +70,7 @@ class ContentPage extends PureComponent {
       this.setState({
         toastType: 'alert',
         toastMessage: 'Ошибка системы',
-        openToast: true,
-        open: false
+        openToast: true
       });
     }
   };
