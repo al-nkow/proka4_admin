@@ -26,6 +26,7 @@ const Content = styled.div`
   padding: 40px;
   width: 100%;
   background: #F6F6F6;
+  overflow: auto;
 `;
 
 const SidebarHead = styled.div`

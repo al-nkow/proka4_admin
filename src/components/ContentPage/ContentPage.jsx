@@ -106,8 +106,15 @@ class ContentPage extends PureComponent {
                     }}
                     component={StyledTextField}
                   />
+                  <Field
+                    name="main.sub"
+                    label="Дополнительное поле"
+                    type="text"
+                    component={StyledTextField}
+                  />
                 </FormRow>
               </StyledPaper>
+
               <StyledPaper>
                 <Title>О проекте</Title>
                 <FormRow>
@@ -123,6 +130,59 @@ class ContentPage extends PureComponent {
                   />
                 </FormRow>
               </StyledPaper>
+
+              <StyledPaper>
+                <Title>Преимущества</Title>
+                <FormRow>
+                  <Field
+                    name="benefits.title"
+                    label="Заголовок"
+                    type="text"
+                    component={StyledTextField}
+                  />
+                </FormRow>
+                <FormRow>
+                  <Field
+                    name="benefits.info"
+                    label="Описание"
+                    type="text"
+                    fieldProps={{
+                      multiline: true,
+                      inputProps: { maxLength: 1000 },
+                    }}
+                    component={StyledTextField}
+                  />
+                </FormRow>
+              </StyledPaper>
+
+              <StyledPaper>
+                <Title>Призы</Title>
+              </StyledPaper>
+
+              <StyledPaper>
+                <Title>Организаторы</Title>
+              </StyledPaper>
+
+              <StyledPaper>
+                <Title>Инструкция</Title>
+              </StyledPaper>
+
+              <StyledPaper>
+                <Title>Программы участия</Title>
+                <FormRow>
+                  <Field
+                    name="programs.start"
+                    label="Заголовок"
+                    type="text"
+                    component={StyledTextField}
+                  />
+                </FormRow>
+              </StyledPaper>
+
+              <StyledPaper>
+                <Title>Контактные данные</Title>
+              </StyledPaper>
+
               <Button type="submit" variant="contained"  color="primary" disabled={!dirty || submitting || !valid}>
                 Сохранить
               </Button>
@@ -143,10 +203,14 @@ const mapStateToProps = state => ({
   loadingStatus: state.content ? state.content.loadingStatus : '',
   initialValues: {
     main: {
-      info: checkContent(state, 'main') ? state.content.content.main.info : ''
+      info: checkContent(state, 'main') ? state.content.content.main.info : '',
+      sub: checkContent(state, 'main') ? state.content.content.main.sub : ''
     },
     about: {
       info: checkContent(state, 'about') ? state.content.content.about.info : ''
+    },
+    programs: {
+      start: checkContent(state, 'programs') ? state.content.content.programs.start : ''
     }
   }
 });
