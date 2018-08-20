@@ -21,6 +21,8 @@ export const clearToken = () => {
 export default () => {
   const token = localStorage.getItem('token');
 
+
+  axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? 'http://37.140.198.199:3000' : 'http://localhost:3000'; // REACT_APP_DEV_API_URL
   // Add a response interceptor
   axios.interceptors.response.use((response) => {
     return response;
@@ -37,8 +39,6 @@ export default () => {
     }
     return Promise.reject(error);
   });
-
-  axios.defaults.baseURL = 'http://localhost:3000'; // REACT_APP_DEV_API_URL
   axios.defaults.headers.post['Content-Type'] = 'application/json';
   axios.defaults.headers.patch['Content-Type'] = 'application/json';
   axios.defaults.headers.put['Content-Type'] = 'application/json';
