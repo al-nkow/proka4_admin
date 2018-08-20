@@ -59,7 +59,8 @@ class AppContainer extends PureComponent {
           <SidebarHead><span>Административная панель</span></SidebarHead>
           <MenuItem name="Аналитика" icon="dashboard" link="/" />
           <MenuItem name="Контент" icon="create" link="/content" />
-          <MenuItem name="Пользователи"  icon="people" link="/users" />
+          <MenuItem name="Пользователи" icon="people" link="/users" />
+          <MenuItem name="Новости" icon="access_time" link="/news" />
         </Sidebar>
         <Content>{this.props.children}</Content>
       </Wrap>
