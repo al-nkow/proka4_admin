@@ -1,4 +1,5 @@
 import axios from 'axios';
+import history from '../history';
 // import { REACT_APP_DEV_API_URL } from '../shared/env';
 
 export const saveToken = token => {
@@ -20,7 +21,24 @@ export const clearToken = () => {
 export default () => {
   const token = localStorage.getItem('token');
 
-  axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? 'http://37.140.198.199:3000' : 'http://localhost:3000';
+
+  axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? 'http://37.140.198.199:3000' : 'http://localhost:3000'; // REACT_APP_DEV_API_URL
+  // Add a response interceptor
+  axios.interceptors.response.use((response) => {
+    return response;
+  }, (error) => {
+    //catches if the session ended!
+    // if ( error.response.data.token.KEY == 'ERR_EXPIRED_TOKEN') {
+    //   console.log("EXPIRED TOKEN!");
+    //   localStorage.clear();
+    //   store.dispatch({ type: UNAUTH_USER });
+    // }
+    if (error && error.response && error.response.status === 401) {
+      localStorage.clear();
+      history.push('/login');
+    }
+    return Promise.reject(error);
+  });
   axios.defaults.headers.post['Content-Type'] = 'application/json';
   axios.defaults.headers.patch['Content-Type'] = 'application/json';
   axios.defaults.headers.put['Content-Type'] = 'application/json';
