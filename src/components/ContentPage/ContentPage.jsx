@@ -11,7 +11,7 @@ import StyledTextField from '../StyledTextField';
 import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
 
-import { PageHead, StyledPaper, Title, FormRow, Error, Part, PartsWrap, ProgramBlock, ProgramTitle } from './parts';
+import { PageHead, StyledPaper, Title, FormRow, Error, Part, PartsWrap, ProgramBlock, ProgramTitle, Wrap, Col } from './parts';
 
 const renderPoints = ({ fields, meta: { error } }) => (
   <div>
@@ -95,319 +95,128 @@ class ContentPage extends PureComponent {
         {
           loadingStatus === 'FAIL' ? (<Error>Ошибка при загрузке контента</Error>) : (
             <form onSubmit={handleSubmit(this.submitForm)}>
-              <StyledPaper>
-                <Title>Главный блок</Title>
-                <FormRow>
-                  <Field
-                    name="main.info"
-                    label="Информация"
-                    type="text"
-                    fieldProps={{
-                      multiline: true,
-                      inputProps: { maxLength: 1000 },
-                    }}
-                    component={StyledTextField}
-                  />
-                  <Field
-                    name="main.sub"
-                    label="Дополнительное поле"
-                    type="text"
-                    component={StyledTextField}
-                  />
-                </FormRow>
-              </StyledPaper>
 
-              <StyledPaper>
-                <Title>О проекте</Title>
-                <FormRow>
-                  <Field
-                    name="about.info"
-                    label="Информация"
-                    type="text"
-                    fieldProps={{
-                      multiline: true,
-                      inputProps: { maxLength: 1000 },
-                    }}
-                    component={StyledTextField}
-                  />
-                </FormRow>
-              </StyledPaper>
+              <Wrap>
+                <Col>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-              <StyledPaper>
-                <Title>Что тебя ждёт в проекте</Title>
-                <PartsWrap>
-                  <Part>
+                  <StyledPaper>
+                    <Title>
+                      Главный блок
+                      <IconButton className="save" color="primary" aria-label="Save" type="submit" disabled={!dirty || submitting || !valid}>
+                        <Icon>save</Icon>
+                      </IconButton>
+                    </Title>
                     <FormRow>
                       <Field
-                        name="benefits.ben1.name"
-                        label="Заголовок 1"
+                        name="main.info"
+                        label="Информация"
+                        type="text"
+                        fieldProps={{
+                          multiline: true,
+                          inputProps: { maxLength: 1000 },
+                        }}
+                        component={StyledTextField}
+                      />
+                      <Field
+                        name="main.sub"
+                        label="Дополнительное поле"
                         type="text"
                         component={StyledTextField}
                       />
                     </FormRow>
+                  </StyledPaper>
+
+                  <StyledPaper>
+                    <Title>
+                      О проекте
+                      <IconButton className="save" color="primary" aria-label="Save" type="submit" disabled={!dirty || submitting || !valid}>
+                        <Icon>save</Icon>
+                      </IconButton>
+                    </Title>
                     <FormRow>
                       <Field
-                        name="benefits.ben1.body"
-                        label="Описание 1"
+                        name="about.info"
+                        label="Информация"
                         type="text"
                         fieldProps={{
                           multiline: true,
-                          inputProps: { maxLength: 200 },
+                          inputProps: { maxLength: 1000 },
                         }}
                         component={StyledTextField}
                       />
                     </FormRow>
-                  </Part>
-                  <Part>
-                    <FormRow>
-                      <Field
-                        name="benefits.ben2.name"
-                        label="Заголовок 2"
-                        type="text"
-                        component={StyledTextField}
-                      />
-                    </FormRow>
-                    <FormRow>
-                      <Field
-                        name="benefits.ben2.body"
-                        label="Описание 2"
-                        type="text"
-                        fieldProps={{
-                          multiline: true,
-                          inputProps: { maxLength: 200 },
-                        }}
-                        component={StyledTextField}
-                      />
-                    </FormRow>
-                  </Part>
-                  <Part>
-                    <FormRow>
-                      <Field
-                        name="benefits.ben3.name"
-                        label="Заголовок 3"
-                        type="text"
-                        component={StyledTextField}
-                      />
-                    </FormRow>
-                    <FormRow>
-                      <Field
-                        name="benefits.ben3.body"
-                        label="Описание 3"
-                        type="text"
-                        fieldProps={{
-                          multiline: true,
-                          inputProps: { maxLength: 200 },
-                        }}
-                        component={StyledTextField}
-                      />
-                    </FormRow>
-                  </Part>
-                  <Part>
-                    <FormRow>
-                      <Field
-                        name="benefits.ben4.name"
-                        label="Заголовок 4"
-                        type="text"
-                        component={StyledTextField}
-                      />
-                    </FormRow>
-                    <FormRow>
-                      <Field
-                        name="benefits.ben4.body"
-                        label="Описание 4"
-                        type="text"
-                        fieldProps={{
-                          multiline: true,
-                          inputProps: { maxLength: 200 },
-                        }}
-                        component={StyledTextField}
-                      />
-                    </FormRow>
-                  </Part>
-                  <Part>
-                    <FormRow>
-                      <Field
-                        name="benefits.ben5.name"
-                        label="Заголовок 5"
-                        type="text"
-                        component={StyledTextField}
-                      />
-                    </FormRow>
-                    <FormRow>
-                      <Field
-                        name="benefits.ben5.body"
-                        label="Описание 5"
-                        type="text"
-                        fieldProps={{
-                          multiline: true,
-                          inputProps: { maxLength: 200 },
-                        }}
-                        component={StyledTextField}
-                      />
-                    </FormRow>
-                  </Part>
-                  <Part>
-                    <FormRow>
-                      <Field
-                        name="benefits.ben6.name"
-                        label="Заголовок 6"
-                        type="text"
-                        component={StyledTextField}
-                      />
-                    </FormRow>
-                    <FormRow>
-                      <Field
-                        name="benefits.ben6.body"
-                        label="Описание 6"
-                        type="text"
-                        fieldProps={{
-                          multiline: true,
-                          inputProps: { maxLength: 200 },
-                        }}
-                        component={StyledTextField}
-                      />
-                    </FormRow>
-                  </Part>
-                </PartsWrap>
-              </StyledPaper>
+                  </StyledPaper>
 
-              <StyledPaper>
-                <Title>Призы</Title>
-                <FormRow>
-                  <Field
-                    name="prizes.title"
-                    label="Заголовок"
-                    type="text"
-                    component={StyledTextField}
-                  />
-                </FormRow>
-                <FormRow>
-                  <Field
-                    name="prizes.subtitle"
-                    label="Подзаголовок"
-                    type="text"
-                    component={StyledTextField}
-                  />
-                </FormRow>
-                <FormRow>
-                  <Field
-                    name="prizes.prize1"
-                    label="1 место"
-                    type="text"
-                    component={StyledTextField}
-                  />
-                </FormRow>
-                <FormRow>
-                  <Field
-                    name="prizes.prize2"
-                    label="2 место"
-                    type="text"
-                    component={StyledTextField}
-                  />
-                </FormRow>
-                <FormRow>
-                  <Field
-                    name="prizes.prize3"
-                    label="3 место"
-                    type="text"
-                    component={StyledTextField}
-                  />
-                </FormRow>
-                <FormRow>
-                  <Field
-                    name="prizes.prize4"
-                    label="4,5 место"
-                    type="text"
-                    component={StyledTextField}
-                  />
-                </FormRow>
-                <FormRow>
-                  <Field
-                    name="prizes.prize5"
-                    label="Самая креативная"
-                    type="text"
-                    component={StyledTextField}
-                  />
-                </FormRow>
-              </StyledPaper>
-
-              <StyledPaper>
-                <Title>Организаторы</Title>
-                <FormRow>
-                  <Field
-                    name="teachers.teacher1.name"
-                    label="Имя"
-                    type="text"
-                    component={StyledTextField}
-                  />
-                </FormRow>
-                <FormRow>
-                  <Field
-                    name="teachers.teacher1.paragraph1"
-                    label="Параграф 1"
-                    type="text"
-                    fieldProps={{
-                      multiline: true,
-                      inputProps: { maxLength: 200 },
-                    }}
-                    component={StyledTextField}
-                  />
-                </FormRow>
-                <FormRow>
-                  <Field
-                    name="teachers.teacher1.paragraph2"
-                    label="Параграф 2"
-                    type="text"
-                    fieldProps={{
-                      multiline: true,
-                      inputProps: { maxLength: 200 },
-                    }}
-                    component={StyledTextField}
-                  />
-                </FormRow>
-              </StyledPaper>
-
-
-
-
-
-
-
-
-
-
-
-              <StyledPaper>
-                <Title>Программы участия</Title>
-                <FormRow>
-                  <Field
-                    name="programs.start"
-                    label="Заголовок"
-                    type="text"
-                    component={StyledTextField}
-                  />
-                  <ProgramBlock>
-                    <ProgramTitle><span className="num"><span>1</span></span>Программа</ProgramTitle>
-                    <PartsWrap>
-                      <Part>
-                        <FormRow>
+                    <StyledPaper>
+                      <Title>
+                        Что тебя ждёт в проекте
+                        <IconButton className="save" color="primary" aria-label="Save" type="submit" disabled={!dirty || submitting || !valid}>
+                          <Icon>save</Icon>
+                        </IconButton>
+                      </Title>
+                      <PartsWrap>
+                        <Part>
+                          <FormRow>
+                            <Field
+                              name="benefits.ben1.name"
+                              label="Заголовок 1"
+                              type="text"
+                              component={StyledTextField}
+                            />
+                          </FormRow>
+                          <FormRow>
+                            <Field
+                              name="benefits.ben1.body"
+                              label="Описание 1"
+                              type="text"
+                              fieldProps={{
+                                multiline: true,
+                                inputProps: { maxLength: 200 },
+                              }}
+                              component={StyledTextField}
+                            />
+                          </FormRow>
+                        </Part>
+                        <Part>
+                          <FormRow>
+                            <Field
+                              name="benefits.ben2.name"
+                              label="Заголовок 2"
+                              type="text"
+                              component={StyledTextField}
+                            />
+                          </FormRow>
+                          <FormRow>
+                            <Field
+                              name="benefits.ben2.body"
+                              label="Описание 2"
+                              type="text"
+                              fieldProps={{
+                                multiline: true,
+                                inputProps: { maxLength: 200 },
+                              }}
+                              component={StyledTextField}
+                            />
+                          </FormRow>
+                        </Part>
+                        <Part>
+                          <FormRow>
+                            <Field
+                              name="benefits.ben3.name"
+                              label="Заголовок 3"
+                              type="text"
+                              component={StyledTextField}
+                            />
+                          </FormRow>
+                          <FormRow>
                           <Field
-                            name="programs.program1.name"
-                            label="Название"
+                            name="benefits.ben3.body"
+                            label="Описание 3"
                             type="text"
+                            fieldProps={{
+                              multiline: true,
+                              inputProps: { maxLength: 200 },
+                            }}
                             component={StyledTextField}
                           />
                         </FormRow>
@@ -415,92 +224,335 @@ class ContentPage extends PureComponent {
                       <Part>
                         <FormRow>
                           <Field
-                            name="programs.program1.price"
-                            label="Стоимость участия"
+                            name="benefits.ben4.name"
+                            label="Заголовок 4"
                             type="text"
+                            component={StyledTextField}
+                          />
+                        </FormRow>
+                        <FormRow>
+                          <Field
+                            name="benefits.ben4.body"
+                            label="Описание 4"
+                            type="text"
+                            fieldProps={{
+                              multiline: true,
+                              inputProps: { maxLength: 200 },
+                            }}
+                            component={StyledTextField}
+                          />
+                        </FormRow>
+                      </Part>
+                      <Part>
+                        <FormRow>
+                          <Field
+                            name="benefits.ben5.name"
+                            label="Заголовок 5"
+                            type="text"
+                            component={StyledTextField}
+                          />
+                        </FormRow>
+                        <FormRow>
+                          <Field
+                            name="benefits.ben5.body"
+                            label="Описание 5"
+                            type="text"
+                            fieldProps={{
+                              multiline: true,
+                              inputProps: { maxLength: 200 },
+                            }}
+                            component={StyledTextField}
+                          />
+                        </FormRow>
+                      </Part>
+                      <Part>
+                        <FormRow>
+                          <Field
+                            name="benefits.ben6.name"
+                            label="Заголовок 6"
+                            type="text"
+                            component={StyledTextField}
+                          />
+                        </FormRow>
+                        <FormRow>
+                          <Field
+                            name="benefits.ben6.body"
+                            label="Описание 6"
+                            type="text"
+                            fieldProps={{
+                              multiline: true,
+                              inputProps: { maxLength: 200 },
+                            }}
                             component={StyledTextField}
                           />
                         </FormRow>
                       </Part>
                     </PartsWrap>
+                  </StyledPaper>
 
+                  <StyledPaper>
+                    <Title>
+                      Призы
+                      <IconButton className="save" color="primary" aria-label="Save" type="submit" disabled={!dirty || submitting || !valid}>
+                        <Icon>save</Icon>
+                      </IconButton>
+                    </Title>
+                    <FormRow>
+                      <Field
+                        name="prizes.title"
+                        label="Заголовок"
+                        type="text"
+                        component={StyledTextField}
+                      />
+                    </FormRow>
+                    <FormRow>
+                      <Field
+                        name="prizes.subtitle"
+                        label="Подзаголовок"
+                        type="text"
+                        component={StyledTextField}
+                      />
+                    </FormRow>
+                    <FormRow>
+                      <Field
+                        name="prizes.prize1"
+                        label="1 место"
+                        type="text"
+                        component={StyledTextField}
+                      />
+                    </FormRow>
+                    <FormRow>
+                      <Field
+                        name="prizes.prize2"
+                        label="2 место"
+                        type="text"
+                        component={StyledTextField}
+                      />
+                    </FormRow>
+                    <FormRow>
+                      <Field
+                        name="prizes.prize3"
+                        label="3 место"
+                        type="text"
+                        component={StyledTextField}
+                      />
+                    </FormRow>
+                    <FormRow>
+                      <Field
+                        name="prizes.prize4"
+                        label="4,5 место"
+                        type="text"
+                        component={StyledTextField}
+                      />
+                    </FormRow>
+                    <FormRow>
+                      <Field
+                        name="prizes.prize5"
+                        label="Самая креативная"
+                        type="text"
+                        component={StyledTextField}
+                      />
+                    </FormRow>
+                  </StyledPaper>
 
+                  <StyledPaper>
+                    <Title>
+                      Организаторы
+                      <IconButton className="save" color="primary" aria-label="Save" type="submit" disabled={!dirty || submitting || !valid}>
+                        <Icon>save</Icon>
+                      </IconButton>
+                    </Title>
+                    <FormRow>
+                      <Field
+                        name="teachers.teacher1.name"
+                        label="Имя"
+                        type="text"
+                        component={StyledTextField}
+                      />
+                    </FormRow>
+                    <FormRow>
+                      <Field
+                        name="teachers.teacher1.paragraph1"
+                        label="Параграф 1"
+                        type="text"
+                        fieldProps={{
+                          multiline: true,
+                          inputProps: { maxLength: 200 },
+                        }}
+                        component={StyledTextField}
+                      />
+                    </FormRow>
+                    <FormRow>
+                      <Field
+                        name="teachers.teacher1.paragraph2"
+                        label="Параграф 2"
+                        type="text"
+                        fieldProps={{
+                          multiline: true,
+                          inputProps: { maxLength: 200 },
+                        }}
+                        component={StyledTextField}
+                      />
+                    </FormRow>
+                  </StyledPaper>
 
-                    <FieldArray name="programs.program1.points" component={renderPoints} />
+                </Col>
+                <Col>
 
+                  <StyledPaper>
+                    <Title>
+                      Программы участия
+                      <IconButton className="save" color="primary" aria-label="Save" type="submit" disabled={!dirty || submitting || !valid}>
+                        <Icon>save</Icon>
+                      </IconButton>
+                    </Title>
+                    <FormRow>
+                      <Field
+                        name="programs.start"
+                        label="Заголовок"
+                        type="text"
+                        component={StyledTextField}
+                      />
+                      <ProgramBlock>
+                        <ProgramTitle><span className="num"><span>1</span></span>Программа</ProgramTitle>
+                        <PartsWrap>
+                          <Part>
+                            <FormRow>
+                              <Field
+                                name="programs.program1.name"
+                                label="Название"
+                                type="text"
+                                component={StyledTextField}
+                              />
+                            </FormRow>
+                          </Part>
+                          <Part>
+                            <FormRow>
+                              <Field
+                                name="programs.program1.price"
+                                label="Стоимость участия"
+                                type="text"
+                                component={StyledTextField}
+                              />
+                            </FormRow>
+                          </Part>
+                        </PartsWrap>
+                        <FieldArray name="programs.program1.points" component={renderPoints} />
+                      </ProgramBlock>
+                      <ProgramBlock>
+                        <ProgramTitle><span className="num"><span>2</span></span>Программа</ProgramTitle>
+                        <PartsWrap>
+                          <Part>
+                            <FormRow>
+                              <Field
+                                name="programs.program2.name"
+                                label="Название"
+                                type="text"
+                                component={StyledTextField}
+                              />
+                            </FormRow>
+                          </Part>
+                          <Part>
+                            <FormRow>
+                              <Field
+                                name="programs.program2.price"
+                                label="Стоимость участия"
+                                type="text"
+                                component={StyledTextField}
+                              />
+                            </FormRow>
+                          </Part>
+                        </PartsWrap>
+                        <FieldArray name="programs.program2.points" component={renderPoints} />
+                      </ProgramBlock>
+                      <ProgramBlock>
+                        <ProgramTitle><span className="num"><span>3</span></span>Программа</ProgramTitle>
+                        <PartsWrap>
+                          <Part>
+                            <FormRow>
+                              <Field
+                                name="programs.program3.name"
+                                label="Название"
+                                type="text"
+                                component={StyledTextField}
+                              />
+                            </FormRow>
+                          </Part>
+                          <Part>
+                            <FormRow>
+                              <Field
+                                name="programs.program3.price"
+                                label="Стоимость участия"
+                                type="text"
+                                component={StyledTextField}
+                              />
+                            </FormRow>
+                          </Part>
+                        </PartsWrap>
+                        <FieldArray name="programs.program3.points" component={renderPoints} />
+                      </ProgramBlock>
+                    </FormRow>
+                  </StyledPaper>
 
+                  <StyledPaper>
+                    <Title>
+                      Контактные данные
+                      <IconButton className="save" color="primary" aria-label="Save" type="submit" disabled={!dirty || submitting || !valid}>
+                        <Icon>save</Icon>
+                      </IconButton>
+                    </Title>
+                    <FormRow>
+                      <Field
+                        name="contacts.inn"
+                        label="ИНН"
+                        type="text"
+                        component={StyledTextField}
+                      />
+                    </FormRow>
+                    <FormRow>
+                      <Field
+                        name="contacts.ogrn"
+                        label="ОГРН"
+                        type="text"
+                        component={StyledTextField}
+                      />
+                    </FormRow>
+                    <FormRow>
+                      <Field
+                        name="contacts.address"
+                        label="Адрес"
+                        type="text"
+                        component={StyledTextField}
+                      />
+                    </FormRow>
+                    <FormRow>
+                      <Field
+                        name="contacts.mobile"
+                        label="Мобильный телефон"
+                        type="text"
+                        component={StyledTextField}
+                      />
+                    </FormRow>
+                    <FormRow>
+                      <Field
+                        name="contacts.phone"
+                        label="Телефон/факс"
+                        type="text"
+                        component={StyledTextField}
+                      />
+                    </FormRow>
+                    <FormRow>
+                      <Field
+                        name="contacts.email"
+                        label="Почта"
+                        type="text"
+                        component={StyledTextField}
+                      />
+                    </FormRow>
+                  </StyledPaper>
 
-
-                  </ProgramBlock>
-                </FormRow>
-              </StyledPaper>
-
-
-
-
-
-
-
-
-
-
-
-
-              <StyledPaper>
-                <Title>Контактные данные</Title>
-                <FormRow>
-                  <Field
-                    name="contacts.inn"
-                    label="ИНН"
-                    type="text"
-                    component={StyledTextField}
-                  />
-                </FormRow>
-                <FormRow>
-                  <Field
-                    name="contacts.ogrn"
-                    label="ОГРН"
-                    type="text"
-                    component={StyledTextField}
-                  />
-                </FormRow>
-                <FormRow>
-                  <Field
-                    name="contacts.address"
-                    label="Адрес"
-                    type="text"
-                    component={StyledTextField}
-                  />
-                </FormRow>
-                <FormRow>
-                  <Field
-                    name="contacts.mobile"
-                    label="Мобильный телефон"
-                    type="text"
-                    component={StyledTextField}
-                  />
-                </FormRow>
-                <FormRow>
-                  <Field
-                    name="contacts.phone"
-                    label="Телефон/факс"
-                    type="text"
-                    component={StyledTextField}
-                  />
-                </FormRow>
-                <FormRow>
-                  <Field
-                    name="contacts.email"
-                    label="Почта"
-                    type="text"
-                    component={StyledTextField}
-                  />
-                </FormRow>
-              </StyledPaper>
-
-              <Button type="submit" variant="contained" color="primary" disabled={!dirty || submitting || !valid}>
-                Сохранить
-              </Button>
+                </Col>
+              </Wrap>
             </form>
           )
         }
@@ -526,6 +578,16 @@ const mapStateToProps = state => ({
         name: idx(state, _ => _.content.content.programs.program1.name),
         price: idx(state, _ => _.content.content.programs.program1.price),
         points: idx(state, _ => _.content.content.programs.program1.points),
+      },
+      program2: {
+        name: idx(state, _ => _.content.content.programs.program2.name),
+        price: idx(state, _ => _.content.content.programs.program2.price),
+        points: idx(state, _ => _.content.content.programs.program2.points),
+      },
+      program3: {
+        name: idx(state, _ => _.content.content.programs.program3.name),
+        price: idx(state, _ => _.content.content.programs.program3.price),
+        points: idx(state, _ => _.content.content.programs.program3.points),
       }
     },
     benefits: {

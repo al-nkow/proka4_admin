@@ -46,6 +46,18 @@ export default values => {
   if (values.programs && values.programs.program1 && !values.programs.program1.price) {
     errors.programs.program1.price = 'Это поле обязательно для заполнения';
   }
+  if (values.programs && values.programs.program2 && !values.programs.program2.name) {
+    errors.programs.program2.name = 'Это поле обязательно для заполнения';
+  }
+  if (values.programs && values.programs.program2 && !values.programs.program2.price) {
+    errors.programs.program2.price = 'Это поле обязательно для заполнения';
+  }
+  if (values.programs && values.programs.program3 && !values.programs.program3.name) {
+    errors.programs.program3.name = 'Это поле обязательно для заполнения';
+  }
+  if (values.programs && values.programs.program3 && !values.programs.program3.price) {
+    errors.programs.program3.price = 'Это поле обязательно для заполнения';
+  }
 
   if (values.benefits && values.benefits.ben1 && !values.benefits.ben1.name) {
     errors.benefits.ben1.name = 'Это поле обязательно для заполнения';

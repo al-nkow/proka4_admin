@@ -1,6 +1,28 @@
 import styled from 'styled-components';
 import Paper from '@material-ui/core/Paper';
 import { error, primary } from '../../utils/colors';
+// import Breakpoints from '../../utils/breakpoints';
+// ${Breakpoints.medium} {
+//   display: block;
+// }
+
+export const Wrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  @media screen and (max-width: 1400px) {
+    display: block;
+  }
+`;
+
+export const Col = styled.div`
+  width: 100%;
+  &:nth-child(odd) {
+    padding-right: 10px;
+  }
+  &:nth-child(even) {
+    padding-left: 10px;
+  }
+`;
 
 export const ProgramTitle = styled.div`
   color: ${primary.main};
@@ -33,7 +55,9 @@ export const PageHead = styled.div`
 export const StyledPaper = styled(Paper)`
   padding: 20px;
   margin-bottom: 20px;
-  max-width: 600px;
+  @media screen and (max-width: 1400px) {
+    max-width: 600px;
+  }
 `;
 
 export const Title = styled.div`
@@ -43,6 +67,14 @@ export const Title = styled.div`
   border-bottom: 2px solid #efefef;
   padding-bottom: 10px;
   color: #67959a;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  .save {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
 `;
 
 export const FormRow = styled.div`
