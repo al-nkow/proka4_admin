@@ -20,7 +20,7 @@ export const clearToken = () => {
 export default () => {
   const token = localStorage.getItem('token');
 
-  axios.defaults.baseURL = 'http://localhost:3000';
+  axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? 'http://37.140.198.199:3000' : 'http://localhost:3000';
   axios.defaults.headers.post['Content-Type'] = 'application/json';
   axios.defaults.headers.patch['Content-Type'] = 'application/json';
   axios.defaults.headers.put['Content-Type'] = 'application/json';
