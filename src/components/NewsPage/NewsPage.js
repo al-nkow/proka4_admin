@@ -1,6 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
 // import { connect } from 'react-redux';
 import styled from 'styled-components';
+import AddNewsDialog from './AddNewsDialog';
 
 const PageHead = styled.div`
   height: 40px;
@@ -15,6 +16,8 @@ class NewsPage extends PureComponent {
         <PageHead>
           Новости
         </PageHead>
+        <p>Новости отсортированы по дате добавления - если необходимо изменить порядок вывода новостей, просто измените дату</p>
+        <AddNewsDialog />
       </Fragment>
     )
   }

@@ -7,13 +7,13 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 
 const renderInput = ({
-   input,
-   type,
-   startChar,
-   thousandSeparator,
-   fieldProps,
-   endAdornment,
-}) => {
+     input,
+     type,
+     startChar,
+     thousandSeparator,
+     fieldProps,
+     endAdornment,
+    }) => {
   return (
     <React.Fragment>
       <Input
@@ -51,13 +51,14 @@ const StyledTextField = styled(
      fieldProps,
      helperText,
      endAdornment,
+     labelProps
    }) => (
     <FormControl
       className={className}
       error={meta && meta.error && meta.touched}
       disabled={disabled}
     >
-      {label && <InputLabel>{label}</InputLabel>}
+      {label && <InputLabel {...labelProps}>{label}</InputLabel>}
       {renderInput({
         input,
         type,
