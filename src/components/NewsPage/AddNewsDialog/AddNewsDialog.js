@@ -1,7 +1,7 @@
 import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { Field, reduxForm, reset } from 'redux-form';
+import { Field, reduxForm, reset, change } from 'redux-form';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -14,8 +14,11 @@ import { signupNewUser } from '../../../redux/actions/users';
 import Toast from '../../Toast';
 import ImageUploader from '../../ImageUploader'
 import DialogContentText from '@material-ui/core/DialogContentText';
+import idx from 'idx';
+import moment from 'moment';
 
 const MAX_UPLOADED_FILE_SIZE = 10485760; // 10mb
+const CURRENT_DATE = moment(new Date()).format('YYYY-MM-DDThh:mm');
 
 const FieldWrap = styled.div`
   margin-bottom: 20px;
@@ -77,8 +80,13 @@ class AddNewsDialog extends React.Component {
 
   handleClose = () => {
     this.setState({ open: false });
-    this.props.dispatch(reset('addUserForm'));
+    this.props.dispatch(reset('addNewsForm'));
   };
+
+  // componentDidMount() {
+  //   this.props.dispatch(change('addNewsForm', 'title', ''));
+  //   this.props.dispatch(change('addNewsForm', 'image', null));
+  // }
 
   render() {
     const {
@@ -86,6 +94,7 @@ class AddNewsDialog extends React.Component {
       submitting,
       valid,
       dirty,
+      stateObj
     } = this.props;
 
     const { openToast, toastMessage, toastType } = this.state;
@@ -130,15 +139,19 @@ class AddNewsDialog extends React.Component {
                 />
               </FieldWrap>
               <FieldWrap>
-                <Field name='email' label='Адрес эл.почты' type='text' component={StyledTextField} />
+                <Field name='created' label='Дата' type='datetime-local' labelProps={{ shrink: true }} component={StyledTextField} />
               </FieldWrap>
               <FieldWrap>
-                <Field name='date' label='Дата' type='datetime-local' labelProps={{
-                  shrink: true,
-                }} component={StyledTextField} />
-              </FieldWrap>
-              <FieldWrap>
-                <Field name='password' label='Пароль' type='text' component={StyledTextField} />
+                <Field
+                  name="title"
+                  label="Заголовок новости"
+                  type="text"
+                  fieldProps={{
+                    multiline: true,
+                    inputProps: { maxLength: 300 },
+                  }}
+                  component={StyledTextField}
+                />
               </FieldWrap>
             </DialogContent>
             <DialogActions>
@@ -151,28 +164,27 @@ class AddNewsDialog extends React.Component {
             </DialogActions>
           </form>
         </Dialog>
-
-
-
-
-
-
-
-
-
-
       </div>
     );
   }
 }
 
+const mapStateToProps = state => ({
+  stateObj: state,
+  initialValues: {
+    created: CURRENT_DATE,
+    image: null,
+    title: null
+  }
+});
+
 export default compose(
   connect(
-    null,
+    mapStateToProps,
     { signupNewUser }
   ),
   reduxForm({
-    form: 'addUserForm',
+    form: 'addNewsForm',
     validate,
     enableReinitialize: true,
   })

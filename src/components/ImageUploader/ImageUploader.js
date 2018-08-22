@@ -1,10 +1,9 @@
 import React, {Fragment} from 'react';
 import styled from 'styled-components';
-import Dropzone from 'react-dropzone';
-
-// import {lightGrey, primary} from '../../../shared/colors';
 import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
+import Dropzone from 'react-dropzone';
+import { primary } from '../../utils/colors';
 
 const Noimage = styled.div`
   width: 100px;
@@ -18,7 +17,7 @@ const Noimage = styled.div`
 
 const NoimageIcon = styled(props => (
   <Icon {...props} style={{fontSize: 32}}>
-    person
+    add_photo_alternate
   </Icon>
 ))`
   color: #a1a1a1;
@@ -38,9 +37,10 @@ const ImgWrap = styled(({src, ...rest}) => <div {...rest} />)`
 const AddImageButton = styled(props => <Button variant="raised" {...props} />)`
   && {
     background-color: #ffffff;
-    color: #4789ab;
+    color: ${primary.main}; //#4789ab;
     min-width: 140px;
     margin-top: 7px;
+    margin-bottom: 10px;
   }
 `;
 
