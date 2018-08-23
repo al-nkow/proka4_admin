@@ -10,7 +10,11 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import validate from './validate';
 import StyledTextField from "../../StyledTextField";
 import styled from 'styled-components';
-import { signupNewUser } from '../../../redux/actions/users';
+
+
+import { createNewsItem } from '../../../redux/actions/news';
+
+
 import Toast from '../../Toast';
 import ImageUploader from '../../ImageUploader'
 import DialogContentText from '@material-ui/core/DialogContentText';
@@ -18,7 +22,6 @@ import idx from 'idx';
 import moment from 'moment';
 
 const MAX_UPLOADED_FILE_SIZE = 10485760; // 10mb
-const CURRENT_DATE = moment(new Date()).format('YYYY-MM-DDThh:mm');
 
 const FieldWrap = styled.div`
   margin-bottom: 20px;
@@ -36,7 +39,7 @@ const StyledDialogTitle = styled(DialogTitle)`
 
 class AddNewsDialog extends React.Component {
   state = {
-    open: true,
+    open: false,
     openToast: false,
     toastMessage: '',
     toastType: ''
@@ -51,27 +54,33 @@ class AddNewsDialog extends React.Component {
   };
 
   submitForm = async (values) => {
-    console.log('[ADD NEWS] >>>>', values);
-    return false;
-    // try {
-    //   await this.props.signupNewUser(values);
-    //   this.setState({
-    //     toastType: 'success',
-    //     toastMessage: 'Пользователь успешно добавлен в систему',
-    //     openToast: true,
-    //     open: false
-    //   });
-    //   this.props.dispatch(reset('addUserForm'));
-    // } catch(error) {
-    //   console.log('SIGN UP NEW USER ERROR: ', error.response);
-    //   const errMsg = error.response && error.response.status === 409 ? 'Пользователь с таким email уже есть в системе' : 'Ошибка при попытке создать пользователя';
-    //   this.setState({
-    //     toastType: 'alert',
-    //     toastMessage: errMsg,
-    //     openToast: true,
-    //     open: false
-    //   });
+    const bodyFormData = new FormData();
+    bodyFormData.append('created', moment(values.created).utc().format());
+    bodyFormData.append('title', values.title);
+    bodyFormData.append('newsImage', values.image[0]);
+    // Show FormData content:
+    // for (var key of bodyFormData.entries()) {
+    //   console.log(key[0] + ', ' + key[1])
     // }
+    try {
+      await this.props.createNewsItem(bodyFormData);
+      this.setState({
+        toastType: 'success',
+        toastMessage: 'Новость успешно создана',
+        openToast: true,
+        open: false
+      });
+      this.props.dispatch(reset('addUserForm'));
+    } catch(error) {
+      console.log('CREATE NEWS ITEM ERROR: ', error.response);
+      const errMsg = 'Ошибка при попытке создать новость';
+      this.setState({
+        toastType: 'alert',
+        toastMessage: errMsg,
+        openToast: true,
+        open: false
+      });
+    }
   };
 
   handleClickOpen = () => {
@@ -172,7 +181,7 @@ class AddNewsDialog extends React.Component {
 const mapStateToProps = state => ({
   stateObj: state,
   initialValues: {
-    created: CURRENT_DATE,
+    created: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
     image: null,
     title: null
   }
@@ -181,7 +190,7 @@ const mapStateToProps = state => ({
 export default compose(
   connect(
     mapStateToProps,
-    { signupNewUser }
+    { createNewsItem }
   ),
   reduxForm({
     form: 'addNewsForm',
