@@ -15,3 +15,7 @@ export const getAllNews = data =>
     params: data,
   });
 
+export const deleteNews = id => {
+  return axios.delete(`/news/${id}`);
+};
+

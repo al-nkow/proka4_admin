@@ -55,7 +55,7 @@ class AddNewsDialog extends React.Component {
 
   submitForm = async (values) => {
     const bodyFormData = new FormData();
-    bodyFormData.append('created', moment(values.created).utc().format());
+    bodyFormData.append('date', moment(values.date).utc().format());
     bodyFormData.append('title', values.title);
     bodyFormData.append('newsImage', values.image[0]);
     // Show FormData content:
@@ -70,7 +70,7 @@ class AddNewsDialog extends React.Component {
         openToast: true,
         open: false
       });
-      this.props.dispatch(reset('addUserForm'));
+      this.props.dispatch(reset('addNewsForm'));
     } catch(error) {
       console.log('CREATE NEWS ITEM ERROR: ', error.response);
       const errMsg = 'Ошибка при попытке создать новость';
@@ -148,7 +148,7 @@ class AddNewsDialog extends React.Component {
                 />
               </FieldWrap>
               <FieldWrap>
-                <Field name='created' label='Дата' type='datetime-local' labelProps={{ shrink: true }} component={StyledTextField} />
+                <Field name='date' label='Дата' type='datetime-local' labelProps={{ shrink: true }} component={StyledTextField} />
               </FieldWrap>
               <FieldWrap>
                 <Field
@@ -181,7 +181,7 @@ class AddNewsDialog extends React.Component {
 const mapStateToProps = state => ({
   stateObj: state,
   initialValues: {
-    created: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
+    date: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
     image: null,
     title: null
   }

@@ -1,6 +1,5 @@
-import { createNews, getAllNews } from '../services/news';
+import { createNews, getAllNews, deleteNews } from '../services/news';
 import idx from 'idx';
-import moment from 'moment';
 
 export const SET_NEWS = 'SET_NEWS';
 // export const GET_NEWS_REQUEST = 'GET_NEWS_REQUEST';
@@ -29,6 +28,16 @@ export const getNewsList = params => dispatch => {
       //   return d;
       // });
       dispatch({ type: SET_NEWS, payload: result });
+      return res;
+    });
+};
+
+export const deleteNewsItem = id => dispatch => {
+  console.log('[ACTION deleteNewsItem] >>>>>', id);
+  return deleteNews(id)
+    .then(res => {
+      console.log('DELETE NEWS ITEM RESULT: ', res);
+      dispatch(getNewsList());
       return res;
     });
 };

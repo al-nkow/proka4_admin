@@ -3,7 +3,10 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import AddNewsDialog from './AddNewsDialog';
 import idx from 'idx';
-import { getNewsList } from '../../redux/actions/news';
+import { getNewsList, deleteNewsItem } from '../../redux/actions/news';
+
+import Toast from '../Toast';
+import ConfirmActionDialog from '../ConfirmActionDialog';
 
 
 import Icon from '@material-ui/core/Icon';
@@ -11,6 +14,7 @@ import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 
+import moment from 'moment';
 
 
 
@@ -68,6 +72,10 @@ const Actions = styled.div`
 `;
 
 class NewsPage extends PureComponent {
+  state = {
+    newsToDelete: '',
+    openToast: false
+  };
 
   componentDidMount() {
     // TODO: add ERROR HANDLER and PRELOADER
@@ -75,12 +83,74 @@ class NewsPage extends PureComponent {
     this.props.getNewsList();
   }
 
+  deleteNews = async () => {
+    const { newsToDelete } = this.state;
+    if (!newsToDelete) return;
+    try {
+      await this.props.deleteNewsItem(newsToDelete._id);
+      this.setState({
+        toastType: 'success',
+        toastMessage: 'Новость успешно удалёна',
+        openToast: true,
+        newsToDelete: ''
+      });
+    } catch(error) {
+      console.log('DELETE NEWS ERROR: ', error);
+      this.setState({
+        toastType: 'alert',
+        toastMessage: 'Ошибка при удалении новости',
+        openToast: true,
+        newsToDelete: ''
+      });
+    }
+  };
+
+  handleCloseToast = () => {
+    this.setState({
+      openToast: false,
+      toastType: '',
+      toastMessage: ''
+    });
+  };
+
+  handleConfirmActionDialogClose = () => {
+    this.setState({ newsToDelete: '' });
+  };
+
+  selectNewsForDelete = (news) => {
+    this.setState({ newsToDelete: news });
+  };
+
+
+
+
+
+
+
+
+
+
+
   render() {
+    const { newsToDelete, openToast, toastMessage, toastType } = this.state;
     const { news } = this.props;
     if (news && news.length) console.log('>>>>', news);
 
     return (
       <Fragment>
+        <Toast
+          type={toastType}
+          title={toastMessage}
+          open={openToast}
+          handleClose={this.handleCloseToast}
+          duration={2000}
+        />
+        <ConfirmActionDialog
+          message={`Вы действительно хотите удалить новость "${newsToDelete ? newsToDelete.title : ''}"?`}
+          open={!!newsToDelete}
+          onCloseHandler={this.handleConfirmActionDialogClose}
+          action={this.deleteNews}
+        />
         <PageHead>
           Новости
         </PageHead>
@@ -88,29 +158,29 @@ class NewsPage extends PureComponent {
         <AddNewsDialog />
         <NewsWrap>
           {
-            news && news.length && news.map((item, i) => (
+            news && news.length ? news.map((item) => (
               <NewsBlock key={item._id}>
                 <ImgWrap>
                   <img src={baseURL + item.image} alt=""/>
                 </ImgWrap>
                 <NewsBody>
                   <Title>{item.title}</Title>
-                  <Created>{item.date}</Created>
+                  <Created>{moment(item.date).format('DD.MM.YYYY HH:mm')}</Created>
                   <Actions>
-                    <IconButton aria-label="Delete" onClick={() => {}}>
+                    <IconButton aria-label="Edit" onClick={() => {}}>
                       <Tooltip title="Редактировать новость" enterDelay={500} placement="top">
                         <Icon>edit</Icon>
                       </Tooltip>
                     </IconButton>
-                    <IconButton aria-label="Delete" onClick={() => {}}>
-                      <Tooltip title="Удалить новость" enterDelay={500} placement="top">
+                    <IconButton aria-label="Delete" onClick={() => { this.selectNewsForDelete(item) } }>
+                      <Tooltip title="Удалить новость" enterDelay={500} placement="top" >
                         <Icon>delete</Icon>
                       </Tooltip>
                     </IconButton>
                   </Actions>
                 </NewsBody>
               </NewsBlock>
-            ))
+            )) : ''
           }
         </NewsWrap>
 
@@ -134,4 +204,4 @@ const mapStateToProps = state => ({
   news: idx(state, _ => _.news.list),
 });
 
-export default connect(mapStateToProps, { getNewsList })(NewsPage);
+export default connect(mapStateToProps, { getNewsList, deleteNewsItem })(NewsPage);
