@@ -10,6 +10,15 @@ export const createNews = data => {
   });
 };
 
+export const updateNews = (id, data) => {
+  return axios({
+    method: 'put',
+    url: `/news/${id}`,
+    data: data,
+    config: { headers: {'Content-Type': 'multipart/form-data' }}
+  });
+};
+
 export const getAllNews = data =>
   axios.get('/news', {
     params: data,

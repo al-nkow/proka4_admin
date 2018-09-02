@@ -79,7 +79,6 @@ const ImageUploader = styled(
      noticeText,
      ...rest,
    }) => {
-
     return (
       <Fragment>
         <Dropzone
@@ -89,7 +88,7 @@ const ImageUploader = styled(
           onDrop={(files, e) => input.onChange(files)}
           >
           <ImagePreview
-          img={input.value ? input.value[0] : previewObj ? previewObj : null}
+            img={input.value ? input.value[0] : previewObj ? previewObj : null}
           />
           <Wrapper>
             <AddImageButton onClick={null}>

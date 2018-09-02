@@ -1,8 +1,9 @@
 import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { Field, reduxForm, reset } from 'redux-form';
+import { Field, reduxForm } from 'redux-form';
 import styled from 'styled-components';
+import idx from 'idx';
 import moment from 'moment';
 
 import Button from '@material-ui/core/Button';
@@ -10,17 +11,16 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContentText from '@material-ui/core/DialogContentText';
-
-import { createNewsItem } from '../../../redux/actions/news';
 
 import validate from './validate';
 import StyledTextField from '../../StyledTextField';
+import Spinner from '../../Spinner';
+import { updateNewsItem } from '../../../redux/actions/news';
 import Toast from '../../Toast';
 import ImageUploader from '../../ImageUploader'
-import Spinner from '../../Spinner';
 
 const MAX_UPLOADED_FILE_SIZE = 1024 * 1024 * 2;
+const baseURL = process.env.NODE_ENV === 'production' ? 'http://37.140.198.199:3000' : 'http://localhost:3000';
 
 const FieldWrap = styled.div`
   margin-bottom: 20px;
@@ -36,9 +36,8 @@ const StyledDialogTitle = styled(DialogTitle)`
   }
 `;
 
-class AddNewsDialog extends React.Component {
+class EditNewsDialog extends React.Component {
   state = {
-    open: false,
     openToast: false,
     toastMessage: '',
     toastType: '',
@@ -57,63 +56,43 @@ class AddNewsDialog extends React.Component {
     const bodyFormData = new FormData();
     bodyFormData.append('date', moment(values.date).utc().format());
     bodyFormData.append('title', values.title);
-    bodyFormData.append('newsImage', values.image[0]);
-    // Show FormData content:
-    // for (var key of bodyFormData.entries()) {
-    //   console.log(key[0] + ', ' + key[1])
-    // }
+    if (values.image) bodyFormData.append('newsImage', values.image[0]);
     this.setState({ submitting: true });
     try {
-      await this.props.createNewsItem(bodyFormData);
+      await this.props.updateNewsItem(this.props.news._id, bodyFormData);
       this.setState({
         toastType: 'success',
-        toastMessage: 'Новость успешно создана',
+        toastMessage: 'Новость успешно обновлена',
         openToast: true,
-        open: false,
-        submitting: false,
+        submitting: false
       });
-      this.props.dispatch(reset('addNewsForm'));
+      this.props.handleClose();
     } catch(error) {
       console.log('CREATE NEWS ITEM ERROR: ', error.response);
-      const errMsg = 'Ошибка при попытке создать новость';
+      const errMsg = 'Ошибка при попытке изменить новость';
       this.setState({
         toastType: 'alert',
         toastMessage: errMsg,
         openToast: true,
-        open: false,
         submitting: false,
       });
+      this.props.handleClose();
     }
   };
-
-  handleClickOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleClose = () => {
-    this.setState({ open: false });
-    this.props.dispatch(reset('addNewsForm'));
-  };
-
-  // componentDidMount() {
-  //   this.props.dispatch(change('addNewsForm', 'title', ''));
-  //   this.props.dispatch(change('addNewsForm', 'image', null));
-  // }
 
   render() {
     const {
       handleSubmit,
       valid,
-      dirty
+      dirty,
+      news,
     } = this.props;
 
     const { openToast, toastMessage, toastType, submitting } = this.state;
+    const previewObj = news ? { preview: baseURL + news.image } : '';
 
     return (
       <div>
-        <Button variant="contained" color="primary" onClick={this.handleClickOpen}>
-          Добавить новость
-        </Button>
         <Toast
           type={toastType}
           title={toastMessage}
@@ -121,19 +100,15 @@ class AddNewsDialog extends React.Component {
           handleClose={this.handleCloseToast}
           duration={2000}
         />
-
         <Dialog
-          open={this.state.open}
-          onClose={this.handleClose}
+          open={this.props.open}
+          onClose={this.props.handleClose}
           aria-labelledby="form-dialog-title"
         >
           { submitting && <Spinner abs={true} /> }
           <form onSubmit={handleSubmit(this.submitForm)}>
-            <StyledDialogTitle id="form-dialog-title">Добавить новость</StyledDialogTitle>
+            <StyledDialogTitle id="form-dialog-title">Редактировать новость</StyledDialogTitle>
             <DialogContent>
-              <DialogContentText style={{marginBottom: '20px'}}>
-                Чтобы загрузить изображение нажмите на кнопку или перетащите изображение в область загрузки
-              </DialogContentText>
               <FieldWrap>
                 <Field
                   previewObj={''}
@@ -141,6 +116,7 @@ class AddNewsDialog extends React.Component {
                   name="image"
                   type="file"
                   component={ImageUploader}
+                  previewObj={previewObj}
                   dropzoneProps={{
                     multiple: false,
                     maxSize: MAX_UPLOADED_FILE_SIZE,
@@ -166,7 +142,7 @@ class AddNewsDialog extends React.Component {
               </FieldWrap>
             </DialogContent>
             <DialogActions>
-              <Button onClick={this.handleClose} color="primary">
+              <Button onClick={this.props.handleClose} color="primary">
                 Отмена
               </Button>
               <Button type="submit" color="primary" disabled={!dirty || submitting || !valid}>
@@ -180,26 +156,21 @@ class AddNewsDialog extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-    const CurrentDate = moment().format('YYYY-MM-DDTHH:mm');
-    return {
-      stateObj: state,
-      initialValues: {
-        date: CurrentDate,
-        image: null,
-        title: null
-    }
+const mapStateToProps = (state, ownProps) => ({
+  initialValues: {
+    date: moment(new Date(idx(ownProps, _ => _.news.date))).format('YYYY-MM-DDTHH:mm'),
+    title: idx(ownProps, _ => _.news.title)
   }
-};
+});
 
 export default compose(
   connect(
     mapStateToProps,
-    { createNewsItem }
+    { updateNewsItem }
   ),
   reduxForm({
-    form: 'addNewsForm',
+    form: 'editNewsForm',
     validate,
     enableReinitialize: true,
   })
-)(AddNewsDialog);
+)(EditNewsDialog);

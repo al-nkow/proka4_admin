@@ -1,8 +1,8 @@
 import {
   SET_NEWS,
-  // GET_CONTENT_REQUEST,
-  // GET_CONTENT_SUCCESS,
-  // GET_CONTENT_FAIL,
+  GET_NEWS_REQUEST,
+  GET_NEWS_SUCCESS,
+  // GET_NEWS_FAIL,
 } from '../actions/news';
 
 const INIT_STATE = {
@@ -13,19 +13,19 @@ const INIT_STATE = {
 
 export default (state = INIT_STATE, action) => {
   switch (action.type) {
-    // case GET_CONTENT_REQUEST:
-    //   return {
-    //     ...state,
-    //     isLoading: true,
-    //     loadingStatus: 'REQUEST',
-    //   };
-    // case GET_CONTENT_SUCCESS:
-    //   return {
-    //     ...state,
-    //     isLoading: false,
-    //     loadingStatus: 'SUCCESS',
-    //   };
-    // case GET_CONTENT_FAIL:
+    case GET_NEWS_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+        loadingStatus: 'REQUEST',
+      };
+    case GET_NEWS_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        loadingStatus: 'SUCCESS',
+      };
+    // case GET_NEWS_FAIL:
     //   return {
     //     ...state,
     //     isLoading: false,

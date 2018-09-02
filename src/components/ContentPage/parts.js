@@ -22,6 +22,14 @@ export const Col = styled.div`
   &:nth-child(even) {
     padding-left: 10px;
   }
+  @media screen and (max-width: 1400px) {
+    &:nth-child(odd) {
+      padding-right: 0;
+    }
+    &:nth-child(even) {
+      padding-left: 0;
+    }
+  }
 `;
 
 export const ProgramTitle = styled.div`
