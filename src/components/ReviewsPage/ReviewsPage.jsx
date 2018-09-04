@@ -5,8 +5,8 @@ import moment from 'moment';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-import AddNewsDialog from './AddNewsDialog';
-import EditNewsDialog from './EditNewsDialog';
+// import AddNewsDialog from './AddNewsDialog';
+// import EditNewsDialog from './EditNewsDialog';
 import Toast from '../Toast';
 import Spinner from '../Spinner';
 import ConfirmActionDialog from '../ConfirmActionDialog';
@@ -23,9 +23,14 @@ import {
   Error,
 } from './parts';
 
+
+import Review from './Review'
+
+
+
 const baseURL = process.env.NODE_ENV === 'production' ? 'http://37.140.198.199:3000' : 'http://localhost:3000';
 
-class NewsPage extends PureComponent {
+class ReviewsPage extends PureComponent {
   state = {
     newsToDelete: '',
     openToast: false,
@@ -92,54 +97,64 @@ class NewsPage extends PureComponent {
     const { news, isLoading } = this.props;
     return (
       <Fragment>
-        <Toast
-          type={toastType}
-          title={toastMessage}
-          open={openToast}
-          handleClose={this.handleCloseToast}
-          duration={2000}
-        />
-        <ConfirmActionDialog
-          message={`Вы действительно хотите удалить новость "${newsToDelete ? newsToDelete.title : ''}"?`}
-          open={!!newsToDelete}
-          onCloseHandler={this.handleConfirmActionDialogClose}
-          action={this.deleteNews}
-        />
+        {/*<Toast*/}
+          {/*type={toastType}*/}
+          {/*title={toastMessage}*/}
+          {/*open={openToast}*/}
+          {/*handleClose={this.handleCloseToast}*/}
+          {/*duration={2000}*/}
+        {/*/>*/}
+        {/*<ConfirmActionDialog*/}
+          {/*message={`Вы действительно хотите удалить новость "${newsToDelete ? newsToDelete.title : ''}"?`}*/}
+          {/*open={!!newsToDelete}*/}
+          {/*onCloseHandler={this.handleConfirmActionDialogClose}*/}
+          {/*action={this.deleteNews}*/}
+        {/*/>*/}
         <PageHead>
-          Новости
+          Инстаграм отзывы
         </PageHead>
-        <p>Новости отсортированы по дате добавления - если необходимо изменить порядок вывода новостей, просто измените дату</p>
-        <AddNewsDialog />
-        <EditNewsDialog open={!!newsToEdit} news={newsToEdit} handleClose={this.handleCloseEditDialog}/>
+        {/*<p>Новости отсортированы по дате добавления - если необходимо изменить порядок вывода новостей, просто измените дату</p>*/}
+        {/*<AddNewsDialog />*/}
+        {/*<EditNewsDialog open={!!newsToEdit} news={newsToEdit} handleClose={this.handleCloseEditDialog}/>*/}
         { error && <Error>Ошибка сервера. Не удалось получить список новостей.</Error> }
         { isLoading && <Spinner height={150} maxWidth={700}/>}
-        <NewsWrap>
-          {
-            news && news.length ? news.map((item) => (
-              <NewsBlock key={item._id}>
-                <ImgWrap>
-                  <img src={baseURL + item.image} alt=""/>
-                </ImgWrap>
-                <NewsBody>
-                  <Title>{item.title}</Title>
-                  <Created>{moment(item.date).format('DD.MM.YYYY HH:mm')}</Created>
-                  <Actions>
-                    <IconButton aria-label="Edit" onClick={() => { this.selectNewsForEdit(item) } }>
-                      <Tooltip title="Редактировать новость" enterDelay={500} placement="top">
-                        <Icon>edit</Icon>
-                      </Tooltip>
-                    </IconButton>
-                    <IconButton aria-label="Delete" onClick={() => { this.selectNewsForDelete(item) } }>
-                      <Tooltip title="Удалить новость" enterDelay={500} placement="top" >
-                        <Icon>delete</Icon>
-                      </Tooltip>
-                    </IconButton>
-                  </Actions>
-                </NewsBody>
-              </NewsBlock>
-            )) : ''
-          }
-        </NewsWrap>
+
+
+
+        <Review form="mycustomformname" />
+
+
+
+
+
+
+        {/*<NewsWrap>*/}
+          {/*{*/}
+            {/*news && news.length ? news.map((item) => (*/}
+              {/*<NewsBlock key={item._id}>*/}
+                {/*<ImgWrap>*/}
+                  {/*<img src={baseURL + item.image} alt=""/>*/}
+                {/*</ImgWrap>*/}
+                {/*<NewsBody>*/}
+                  {/*<Title>{item.title}</Title>*/}
+                  {/*<Created>{moment(item.date).format('DD.MM.YYYY HH:mm')}</Created>*/}
+                  {/*<Actions>*/}
+                    {/*<IconButton aria-label="Edit" onClick={() => { this.selectNewsForEdit(item) } }>*/}
+                      {/*<Tooltip title="Редактировать новость" enterDelay={500} placement="top">*/}
+                        {/*<Icon>edit</Icon>*/}
+                      {/*</Tooltip>*/}
+                    {/*</IconButton>*/}
+                    {/*<IconButton aria-label="Delete" onClick={() => { this.selectNewsForDelete(item) } }>*/}
+                      {/*<Tooltip title="Удалить новость" enterDelay={500} placement="top" >*/}
+                        {/*<Icon>delete</Icon>*/}
+                      {/*</Tooltip>*/}
+                    {/*</IconButton>*/}
+                  {/*</Actions>*/}
+                {/*</NewsBody>*/}
+              {/*</NewsBlock>*/}
+            {/*)) : ''*/}
+          {/*}*/}
+        {/*</NewsWrap>*/}
       </Fragment>
     )
   }
@@ -151,4 +166,4 @@ const mapStateToProps = state => ({
   isLoading: idx(state, _ => _.news.isLoading),
 });
 
-export default connect(mapStateToProps, { getNewsList, deleteNewsItem })(NewsPage);
+export default connect(mapStateToProps, { getNewsList, deleteNewsItem })(ReviewsPage);

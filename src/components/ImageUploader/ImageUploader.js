@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
 import Dropzone from 'react-dropzone';
-import { primary } from '../../utils/colors';
+import {primary} from '../../utils/colors';
 
 const Noimage = styled.div`
   width: 100px;
@@ -13,6 +13,11 @@ const Noimage = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  &.block {
+    width: 100%;
+    height: 160px;
+    margin-bottom: 10px;
+  }
 `;
 
 const NoimageIcon = styled(props => (
@@ -32,6 +37,11 @@ const ImgWrap = styled(({src, ...rest}) => <div {...rest} />)`
   width: 100px;
   height: 100px;
   border-radius: 4px;
+  &.block {
+    width: 100%;
+    height: 160px;
+    margin-bottom: 10px;
+  }
 `;
 
 const AddImageButton = styled(props => <Button variant="raised" {...props} />)`
@@ -44,12 +54,12 @@ const AddImageButton = styled(props => <Button variant="raised" {...props} />)`
   }
 `;
 
-const ImagePreview = styled(({img, className}) => (
-  <div className={className}>
+const ImagePreview = styled(({img, className, display}) => (
+  <div className={`${className} ${display}`}>
     {img ? (
-      <ImgWrap src={img.preview}/>
+      <ImgWrap src={img.preview} className={display}/>
     ) : (
-      <Noimage>
+      <Noimage className={display}>
         <NoimageIcon/>
       </Noimage>
     )}
@@ -57,6 +67,9 @@ const ImagePreview = styled(({img, className}) => (
 ))`
   display: block;
   margin-right: 24px;
+  &.block {
+    margin-right: 0;
+  }
 `;
 
 const Wrapper = styled.div`
@@ -71,6 +84,7 @@ const Notice = styled.p`
 
 const ImageUploader = styled(
   ({
+     display,
      className,
      input,
      previewObj,
@@ -86,8 +100,9 @@ const ImageUploader = styled(
           name={name}
           {...dropzoneProps}
           onDrop={(files, e) => input.onChange(files)}
-          >
+        >
           <ImagePreview
+            display={display}
             img={input.value ? input.value[0] : previewObj ? previewObj : null}
           />
           <Wrapper>
@@ -101,7 +116,7 @@ const ImageUploader = styled(
     )
   }
 )`
-  display: flex;
+  display: ${(props) => props.display || 'flex'};
   align-items: flex-start;
 `;
 

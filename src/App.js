@@ -14,6 +14,7 @@ import theme from './theme';
 import UsersPage from './components/UsersPage';
 import ContentPage from './components/ContentPage';
 import NewsPage from './components/NewsPage';
+import ReviewsPage from './components/ReviewsPage';
 
 createApiInstance();
 
@@ -32,6 +33,7 @@ class App extends Component {
                   <Route exact path="/content" component={ContentPage} />
                   <Route exact path="/users" component={UsersPage} />
                   <Route exact path="/news" component={NewsPage} />
+                  <Route exact path="/reviews" component={ReviewsPage} />
                 </Switch>
               </PrivateRoute>
             </Switch>

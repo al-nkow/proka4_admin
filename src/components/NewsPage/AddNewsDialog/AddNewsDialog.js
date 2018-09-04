@@ -146,7 +146,7 @@ class AddNewsDialog extends React.Component {
                     maxSize: MAX_UPLOADED_FILE_SIZE,
                     accept: '.jpg, .png',
                   }}
-                  noticeText={'Разрешена загрузка файлов с расширением jpeg, jpg и png. Размер файла не должен превышать 10Мб'}
+                  noticeText={'Разрешена загрузка файлов с расширением jpeg, jpg и png. Размер файла не должен превышать 2Мб'}
                 />
               </FieldWrap>
               <FieldWrap>
