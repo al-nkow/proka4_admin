@@ -4,7 +4,7 @@ import Paper from '@material-ui/core/Paper/index';
 import ImageUploader from '../../ImageUploader'
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { Field, FieldArray, reduxForm, reset, formValueSelector } from 'redux-form';
+import { Field, FieldArray, reduxForm, reset, formValueSelector, change } from 'redux-form';
 import StyledTextField from '../../StyledTextField';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
@@ -118,6 +118,10 @@ const renderComments = ({ fields, meta: { error } }) => (
 
 class Review extends Component {
 
+  state = {
+    previewObj: ''
+  };
+
 
   // Get media_id: https://api.instagram.com/oembed/?url=__paste_url_here__
 
@@ -128,10 +132,17 @@ class Review extends Component {
     // }).then((res) => {console.log('>>>>>>', res);}).catch((err) => {console.log('>>>>>>', err);})
 
 
-    // Здесь можно получить первый комментарий (автора поста) и ссылку на миниатюру
+    // Get author (first) comment and post thumbnail
     fetch(`https://api.instagram.com/oembed/?url=${this.link.value}`)
       .then(res => res.json())
-      .then((res) => {console.log('>>>>>>', res);})
+      .then((res) => {
+        console.log('>>>>>>', res);
+
+        this.setState({ previewObj: { preview: res.thumbnail_url }});
+        this.props.dispatch(change(this.props.form, `comments[0].name`, res.author_name));
+        this.props.dispatch(change(this.props.form, `comments[0].comment`, res.title));
+
+      })
       .catch((err) => {console.log('ERROR >>>>>>', err);})
 
     // fetch(`https://api.instagram.com/v1/media/${media_id}/comments?access_token=${token}`)
@@ -148,6 +159,12 @@ class Review extends Component {
 
 
   };
+
+
+  // componentDidMount() {
+  //   this.props.dispatch(change('addNewsForm', 'title', ''));
+  //   this.props.dispatch(change('addNewsForm', 'image', null));
+  // }
 
 
 
@@ -177,13 +194,14 @@ class Review extends Component {
 
 
   render() {
+    const { previewObj } = this.state;
     return (
       <StyledPaper>
         <StyledForm>
           <LeftCol>
             <Field
               display="block"
-              previewObj={''}
+              previewObj={previewObj}
               label='Изображение'
               name="image"
               type="file"
