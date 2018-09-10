@@ -4,11 +4,13 @@ import Paper from '@material-ui/core/Paper/index';
 import ImageUploader from '../../ImageUploader'
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { Field, FieldArray, reduxForm, reset } from 'redux-form';
+import { Field, FieldArray, reduxForm, reset, formValueSelector } from 'redux-form';
 import StyledTextField from '../../StyledTextField';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
+import Tooltip from '@material-ui/core/Tooltip';
+import axios from 'axios';
 
 const MAX_UPLOADED_FILE_SIZE = 1024 * 1024 * 2;
 
@@ -46,14 +48,10 @@ const RightCol = styled.div`
   padding-left: 10px;
   width: 100%;
 `;
-const Comments = styled.div`
-  border: 1px solid red;
+const Comments = styled(Paper)`
   padding: 5px;
   max-height: 300px;
   overflow: auto;
-`;
-const FieldWrap = styled.div`
-  margin-bottom: 20px;
 `;
 export const FormRow = styled.div`
   margin-bottom: 20px;
@@ -61,26 +59,53 @@ export const FormRow = styled.div`
     display: flex;
     flex-direction: row;
   }
+  &.name {
+    width: 50%;
+  }
+`;
+const Comment = styled.div`
+  margin-bottom: 20px;
+  display: flex;
+  width: 100%;
+`;
+const NoComments = styled.div`
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #bb6258;
 `;
 
 const renderComments = ({ fields, meta: { error } }) => (
   <div>
+    {!fields.length && <NoComments>Комментариев пока нет</NoComments>}
     {fields.map((point, index) => (
-      <FormRow className="hasicon" key={index} style={{border: '1px solid green', marginBottom: '10px'}}>
-        <Field
-          name={`${point}.firstName`}
-          label={`Пункт ${index + 1}`}
-          type="text"
-          fieldProps={{
-            multiline: true,
-            inputProps: { maxLength: 200 },
-          }}
-          component={StyledTextField}
-        />
-        <IconButton aria-label="Delete" onClick={() => fields.remove(index)}>
+      <Comment key={index}>
+        <div style={{width: '100%'}}>
+          <FormRow className="name">
+            <Field
+              name={`${point}.name`}
+              label={'Имя'}
+              type="text"
+              component={StyledTextField}
+            />
+          </FormRow>
+          <FormRow>
+            <Field
+              name={`${point}.comment`}
+              label={'Комментарий'}
+              type="text"
+              fieldProps={{
+                multiline: true,
+                inputProps: { maxLength: 1000 },
+              }}
+              component={StyledTextField}
+            />
+          </FormRow>
+        </div>
+        <IconButton style={{flex: 'none'}} aria-label="Delete" onClick={() => fields.remove(index)}>
           <Icon>delete</Icon>
         </IconButton>
-      </FormRow>
+      </Comment>
     ))}
     <Button size="small" variant="contained" onClick={() => fields.push()} color="primary">
       Добавить
@@ -92,6 +117,65 @@ const renderComments = ({ fields, meta: { error } }) => (
 
 
 class Review extends Component {
+
+
+  // Get media_id: https://api.instagram.com/oembed/?url=__paste_url_here__
+
+  getReviewsFromInstagram = () => {
+    // console.log('>>>>>>>>', this.link.value);
+    // axios.get('/user', {
+    //   params: data,
+    // }).then((res) => {console.log('>>>>>>', res);}).catch((err) => {console.log('>>>>>>', err);})
+
+
+    // Здесь можно получить первый комментарий (автора поста) и ссылку на миниатюру
+    fetch(`https://api.instagram.com/oembed/?url=${this.link.value}`)
+      .then(res => res.json())
+      .then((res) => {console.log('>>>>>>', res);})
+      .catch((err) => {console.log('ERROR >>>>>>', err);})
+
+    // fetch(`https://api.instagram.com/v1/media/${media_id}/comments?access_token=${token}`)
+    //   .then((resp) => resp.json())
+    //   .then((data) => {
+    //     if (data && data.data && data.data.length) {
+    //       sessionStorage.setItem(element, JSON.stringify(data.data));
+    //       renderData(data.data, element);
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log('GET COMMENTS ERROR:', error);
+    //   });
+
+
+  };
+
+
+
+  // function getComments(token, media_id, element) {
+  //   const url = `https://api.instagram.com/v1/media/${media_id}/comments?access_token=${token}`;
+  //
+  //   const storage = sessionStorage.getItem(element);
+  //
+  //   if (storage) {
+  //     renderData(JSON.parse(storage), element);
+  //     return;
+  //   }
+  //
+  //   fetch(url)
+  //     .then((resp) => resp.json())
+  //     .then((data) => {
+  //       if (data && data.data && data.data.length) {
+  //         sessionStorage.setItem(element, JSON.stringify(data.data));
+  //         renderData(data.data, element);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log('GET COMMENTS ERROR:', error);
+  //     });
+  // }
+
+
+
   render() {
     return (
       <StyledPaper>
@@ -113,14 +197,22 @@ class Review extends Component {
             />
           </LeftCol>
           <RightCol>
-            <FieldWrap>
+            <FormRow className="hasicon">
               <Field
-                name="myname"
+                name="link"
                 label="Ссылка на отзыв в instagram"
                 type="text"
                 component={StyledTextField}
+                fieldProps={{
+                  inputProps: { ref: (c) => {this.link = c} },
+                }}
               />
-            </FieldWrap>
+              <IconButton style={{flex: 'none'}} aria-label="Delete" onClick={this.getReviewsFromInstagram}>
+                <Tooltip title="Загрузить по ссылке" enterDelay={500} placement="left">
+                  <Icon>archive</Icon>
+                </Tooltip>
+              </IconButton>
+            </FormRow>
             <Comments>
               <FieldArray name="comments" component={renderComments} />
             </Comments>
