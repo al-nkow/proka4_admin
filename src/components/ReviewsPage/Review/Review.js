@@ -11,6 +11,10 @@ import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
 import Tooltip from '@material-ui/core/Tooltip';
 import axios from 'axios';
+import idx from 'idx';
+import moment from "moment/moment";
+
+import { createReviewItem } from '../../../redux/actions/reviews';
 
 const MAX_UPLOADED_FILE_SIZE = 1024 * 1024 * 2;
 
@@ -74,6 +78,13 @@ const NoComments = styled.div`
   font-size: 14px;
   color: #bb6258;
 `;
+const Footer = styled.div`
+  padding-top: 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+`;
 
 const renderComments = ({ fields, meta: { error } }) => (
   <div>
@@ -96,7 +107,9 @@ const renderComments = ({ fields, meta: { error } }) => (
               type="text"
               fieldProps={{
                 multiline: true,
-                inputProps: { maxLength: 1000 },
+                inputProps: {
+                  maxLength: 1000
+                },
               }}
               component={StyledTextField}
             />
@@ -122,49 +135,91 @@ class Review extends Component {
     previewObj: ''
   };
 
+  getReviewsFromInstagram = async () => {
+    try {
+      const resp = await fetch(`https://api.instagram.com/oembed/?url=${this.link.value}`);
+      const post = await resp.json();
 
-  // Get media_id: https://api.instagram.com/oembed/?url=__paste_url_here__
+      if (!post) return;
 
-  getReviewsFromInstagram = () => {
-    // console.log('>>>>>>>>', this.link.value);
-    // axios.get('/user', {
-    //   params: data,
-    // }).then((res) => {console.log('>>>>>>', res);}).catch((err) => {console.log('>>>>>>', err);})
+      this.setState({ previewObj: { preview: post.thumbnail_url }});
+      let counter = 0;
 
+      if (post.title) {
+        counter += 1;
+        this.props.dispatch(change(this.props.form, `comments[0].name`, post.author_name));
+        this.props.dispatch(change(this.props.form, `comments[0].comment`, post.title));
+      }
 
-    // Get author (first) comment and post thumbnail
-    fetch(`https://api.instagram.com/oembed/?url=${this.link.value}`)
-      .then(res => res.json())
-      .then((res) => {
-        console.log('>>>>>>', res);
+      const respComm = await fetch(`https://api.instagram.com/v1/media/${post.media_id}/comments?access_token=${process.env.REACT_APP_INSTAGRAM_TOKEN}`);
+      const comments = await respComm.json();
 
-        this.setState({ previewObj: { preview: res.thumbnail_url }});
-        this.props.dispatch(change(this.props.form, `comments[0].name`, res.author_name));
-        this.props.dispatch(change(this.props.form, `comments[0].comment`, res.title));
+      if (comments && comments.data && comments.data.length) {
+        comments.data.forEach((item, i) => {
+          this.props.dispatch(change(this.props.form, `comments[${i + counter}].name`, item.from.username));
+          this.props.dispatch(change(this.props.form, `comments[${i + counter}].comment`, item.text));
+        });
+      }
 
-      })
-      .catch((err) => {console.log('ERROR >>>>>>', err);})
-
-    // fetch(`https://api.instagram.com/v1/media/${media_id}/comments?access_token=${token}`)
-    //   .then((resp) => resp.json())
-    //   .then((data) => {
-    //     if (data && data.data && data.data.length) {
-    //       sessionStorage.setItem(element, JSON.stringify(data.data));
-    //       renderData(data.data, element);
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log('GET COMMENTS ERROR:', error);
-    //   });
-
-
+    } catch(err) {
+      console.log('GET INSTAGRAM REVIEWS ERROR: ', err);
+    }
   };
 
 
-  // componentDidMount() {
-  //   this.props.dispatch(change('addNewsForm', 'title', ''));
-  //   this.props.dispatch(change('addNewsForm', 'image', null));
-  // }
+
+
+
+
+
+
+
+
+
+
+
+  submitForm = async (values) => {
+    const bodyFormData = new FormData();
+    bodyFormData.append('comments', values.comments);
+    bodyFormData.append('link', values.link);
+    if (idx(this, _ => _.state.previewObj.preview)) bodyFormData.append('imageLink', this.state.previewObj.preview);
+
+    // send to server createReviewItem
+    try {
+      await this.props.createReviewItem(bodyFormData);
+      // this.setState({
+      //   toastType: 'success',
+      //   toastMessage: 'Новость успешно создана',
+      //   openToast: true,
+      //   open: false,
+      //   submitting: false,
+      // });
+      // this.props.dispatch(reset('addNewsForm'));
+    } catch(error) {
+      console.log('CREATE REVIEW ITEM ERROR: ', error.response);
+      // const errMsg = 'Ошибка при попытке создать новость';
+      // this.setState({
+      //   toastType: 'alert',
+      //   toastMessage: errMsg,
+      //   openToast: true,
+      //   open: false,
+      //   submitting: false,
+      // });
+    }
+  };
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -194,6 +249,11 @@ class Review extends Component {
 
 
   render() {
+    const {
+      handleSubmit,
+      valid,
+      dirty
+    } = this.props;
     const { previewObj } = this.state;
     return (
       <StyledPaper>
@@ -236,16 +296,42 @@ class Review extends Component {
             </Comments>
           </RightCol>
         </StyledForm>
+
+
+
+
+        <Footer>
+          <div style={{width: '152px'}}>
+            <Field
+              name="order"
+              label="Порядковый номер"
+              type="text"
+              component={StyledTextField}
+            />
+          </div>
+          <div style={{width: '100%', textAlign: 'right'}}>
+            <Button size="small" variant="contained" onClick={handleSubmit(this.submitForm)} color="primary">
+              Сохранить
+            </Button>
+          </div>
+        </Footer>
+
+
+
+
+
+
+
       </StyledPaper>
     )
   }
 }
 
 export default compose(
-  // connect(
-  //   mapStateToProps,
-  //   { saveSiteContent, getSiteContent }
-  // ),
+  connect(
+    null,
+    { createReviewItem }
+  ),
   reduxForm()
     // {
     // validate,
