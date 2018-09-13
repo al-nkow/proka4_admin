@@ -2,17 +2,28 @@ import Paper from '@material-ui/core/Paper';
 import styled from 'styled-components';
 import { error } from '../../utils/colors';
 
+export const Comment = styled.div`
+  margin-bottom: 10px;
+  font-size: 12px;
+`;
+export const CommentsWrap = styled.div`
+  max-height: 200px;
+  overflow: auto;
+`;
+
+
 export const Error = styled.div`
   padding: 40px 0;
   color: ${error.main};
 `;
 
-export const NewsBlock = styled(Paper)`
-  margin-bottom: 10px;
-  max-width: 700px;
+export const ReviewBlock = styled(Paper)`
+  margin: 10px;
+  padding: 0 10px 10px 10px;
+  max-width: 200px;
   overflow: hidden;
-  display: flex;
-  flex-direction: row;
+  display: inline-block;
+  vertical-align: top;
 `;
 
 export const PageHead = styled.div`

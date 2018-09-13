@@ -111,7 +111,6 @@ class EditNewsDialog extends React.Component {
             <DialogContent>
               <FieldWrap>
                 <Field
-                  previewObj={''}
                   label='Изображение'
                   name="image"
                   type="file"
