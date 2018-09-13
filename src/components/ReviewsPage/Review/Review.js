@@ -179,8 +179,9 @@ class Review extends Component {
 
 
   submitForm = async (values) => {
+    console.log('>>>>>>>', values.comments);
     const bodyFormData = new FormData();
-    bodyFormData.append('comments', values.comments);
+    bodyFormData.append('comments', JSON.stringify(values.comments));
     bodyFormData.append('link', values.link);
     if (idx(this, _ => _.state.previewObj.preview)) bodyFormData.append('imageLink', this.state.previewObj.preview);
 
