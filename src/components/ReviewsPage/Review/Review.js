@@ -1,36 +1,18 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import Paper from '@material-ui/core/Paper/index';
 import ImageUploader from '../../ImageUploader'
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { Field, FieldArray, reduxForm, reset, formValueSelector, change } from 'redux-form';
+import { Field, FieldArray, reduxForm, change } from 'redux-form';
 import StyledTextField from '../../StyledTextField';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
 import Tooltip from '@material-ui/core/Tooltip';
-import axios from 'axios';
 import idx from 'idx';
-import moment from "moment/moment";
-
 import { createReviewItem } from '../../../redux/actions/reviews';
-
 const MAX_UPLOADED_FILE_SIZE = 1024 * 1024 * 2;
-
-
-const revirews = [{
-  created_time: '123456789',
-  from: { username: 'Some_user_name1' },
-  id: '123456ggg4567891',
-  text: 'Some text here some text here some text here some text here'
-},{
-  created_time: '123456789',
-  from: { username: 'Some_user_name2' },
-  id: '123456ggg4567892',
-  text: 'Some text here some text here some text here some text here'
-}];
-
 
 const StyledForm = styled.form`
   display: flex;

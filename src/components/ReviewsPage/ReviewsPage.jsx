@@ -11,6 +11,7 @@ import Toast from '../Toast';
 import Spinner from '../Spinner';
 import ConfirmActionDialog from '../ConfirmActionDialog';
 import { getReviewsList, deleteReviewItem } from '../../redux/actions/reviews'; // deleteReviewsItem
+import AddReviewDialog from './AddReviewDialog';
 
 import styled from 'styled-components';
 
@@ -110,6 +111,13 @@ class ReviewsPage extends PureComponent {
     this.setState({ reviewToDelete: review });
   };
 
+  getMaxOrder = (reviews) => {
+    if (!reviews || reviews && !reviews.length) return '';
+    return reviews.reduce((result, item) => {
+      return item.order && (item.order > result) ? item.order : result;
+    }, 0);
+  };
+
   // selectNewsForEdit = (news) => {
   //   this.setState({ newsToEdit: news });
   // };
@@ -122,6 +130,12 @@ class ReviewsPage extends PureComponent {
     const { reviewToDelete, newsToEdit, openToast, toastMessage, toastType, error } = this.state;
     const { reviews, isLoading } = this.props;
     console.log('>>>>>>>>', reviews);
+
+    const orderMax = this.getMaxOrder(reviews);
+
+
+
+
     return (
       <Fragment>
         <Toast
@@ -148,7 +162,12 @@ class ReviewsPage extends PureComponent {
 
 
 
-        <Review form="mycustomformname" />
+
+        <AddReviewDialog orderMax={orderMax}/>
+
+
+
+        {/*<Review form="mycustomformname" />*/}
 
 
 
