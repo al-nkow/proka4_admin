@@ -161,7 +161,6 @@ class Review extends Component {
 
 
   submitForm = async (values) => {
-    console.log('>>>>>>>', values.comments);
     const bodyFormData = new FormData();
     bodyFormData.append('comments', JSON.stringify(values.comments));
     bodyFormData.append('link', values.link);

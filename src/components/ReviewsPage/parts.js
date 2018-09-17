@@ -1,6 +1,42 @@
 import Paper from '@material-ui/core/Paper';
 import styled from 'styled-components';
-import { error } from '../../utils/colors';
+import { error, primary } from '../../utils/colors';
+
+export const PreviewImage = styled.a`
+  transition: all 0.1s linear;
+  &:hover {
+    opacity: 0.8;
+  }
+`;
+
+export const ReviewBlockControls = styled.div`
+  text-align: right;
+  margin: 0 -10px 0 -10px;
+  position:relative;
+`;
+
+export const Order = styled.div`
+  width: 22px;
+  height: 22px;
+  font-size: 14px;
+  color: #ffffff;
+  background: ${primary.main};
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 11px;
+  left: 11px;
+  &.noorder {
+    opacity: 0.2;
+  }
+`;
+
+export const Controls = styled.div`
+  padding: 10px;
+  margin-bottom: 20px;
+`;
 
 export const Comment = styled.div`
   margin-bottom: 10px;

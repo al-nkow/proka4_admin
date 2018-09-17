@@ -25,6 +25,7 @@ import Spinner from '../../Spinner';
 import idx from 'idx';
 
 const MAX_UPLOADED_FILE_SIZE = 1024 * 1024 * 2;
+const baseURL = process.env.NODE_ENV === 'production' ? 'http://37.140.198.199:3000' : 'http://localhost:3000';
 
 const FieldWrap = styled.div`
   margin-bottom: 20px;
@@ -120,14 +121,12 @@ const renderComments = ({ fields, meta: { error } }) => (
   </div>
 );
 
-class AddReviewDialog extends React.Component {
+class EditReviewDialog extends React.Component {
   state = {
-    open: false,
     openToast: false,
     toastMessage: '',
     toastType: '',
     submitting: false,
-    previewObj: ''
   };
 
   handleCloseToast = () => {
@@ -142,49 +141,19 @@ class AddReviewDialog extends React.Component {
     this.setState({ open: true });
   };
 
-  handleClose = () => {
-    this.setState({ open: false });
-    this.props.dispatch(reset('addReviewForm'));
-  };
-
-  getReviewsFromInstagram = async () => {
-    try {
-      this.setState({ submitting: true });
-      const resp = await fetch(`https://api.instagram.com/oembed/?url=${this.link.value}`);
-      const post = await resp.json();
-
-      if (!post) {
-        this.setState({ submitting: false });
-        return;
-      }
-
-      let allComments = post.title ? [{
-        name: post.author_name,
-        comment: post.title
-      }] : [];
-
-      const respComm = await fetch(`https://api.instagram.com/v1/media/${post.media_id}/comments?access_token=${process.env.REACT_APP_INSTAGRAM_TOKEN}`);
-      const comments = await respComm.json();
-
-      if (comments && comments.data && comments.data.length) {
-        const commentsArray = comments.data.map(item => ({
-          name: item.from.username,
-          comment: item.text
-        }));
-        allComments = allComments.concat(commentsArray);
-      }
-
-      this.setState({ previewObj: { preview: post.thumbnail_url }});
-      this.props.dispatch(change(this.props.form, 'comments', allComments));
-
-      this.setState({ submitting: false });
-    } catch(err) {
-      this.setState({ submitting: false });
-      console.log('GET INSTAGRAM REVIEWS ERROR: ', err);
-    }
-  };
+  // handleClose = () => {
+  //   this.setState({ open: false });
+  //   this.props.dispatch(reset('addReviewForm'));
+  // };
 
   submitForm = async (values) => {
+
+    console.log('>>>> VALUES >>>>', values);
+    return false;
+
+
+
+
     const bodyFormData = new FormData();
     bodyFormData.append('comments', JSON.stringify(values.comments));
     bodyFormData.append('link', values.link);
@@ -220,19 +189,24 @@ class AddReviewDialog extends React.Component {
 
   render() {
     const {
+      review,
+      open,
+      handleClose,
       handleSubmit,
       valid,
       dirty,
       formValues
     } = this.props;
-    const { openToast, toastMessage, toastType, submitting, previewObj } = this.state;
-    const hasImage = (formValues && formValues.image) || previewObj.preview;
+    const { openToast, toastMessage, toastType, submitting } = this.state;
+    const hasImage = true; //(formValues && formValues.image) || previewObj.preview;
+
+    const previewObj = review ? { preview: baseURL + review.image } : '';
 
     return (
       <div>
-        <Button variant="contained" color="primary" onClick={this.handleClickOpen}>
-          Добавить отзыв
-        </Button>
+        {/*<Button variant="contained" color="primary" onClick={this.handleClickOpen}>*/}
+          {/*Редактировать отзыв*/}
+        {/*</Button>*/}
         <Toast
           type={toastType}
           title={toastMessage}
@@ -241,13 +215,13 @@ class AddReviewDialog extends React.Component {
           duration={2000}
         />
         <Dialog
-          open={this.state.open}
-          onClose={this.handleClose}
+          open={open}
+          onClose={handleClose}
           aria-labelledby="form-dialog-title"
         >
           { submitting && <Spinner abs={true} /> }
           <form onSubmit={handleSubmit(this.submitForm)}>
-            <StyledDialogTitle id="form-dialog-title">Добавить отзыв</StyledDialogTitle>
+            <StyledDialogTitle id="form-dialog-title">Редактировать отзыв</StyledDialogTitle>
             <DialogContent>
               <FieldWrap>
                 <Field
@@ -264,7 +238,7 @@ class AddReviewDialog extends React.Component {
                   noticeText={'Разрешена загрузка файлов с расширением jpeg, jpg и png. Размер файла не должен превышать 2Мб'}
                 />
               </FieldWrap>
-              <FormRow className="hasicon">
+              <FormRow>
                 <Field
                   name="link"
                   label="Ссылка на отзыв в instagram"
@@ -274,11 +248,6 @@ class AddReviewDialog extends React.Component {
                     inputProps: { ref: (c) => {this.link = c} },
                   }}
                 />
-                <IconButton style={{flex: 'none'}} aria-label="Delete" onClick={this.getReviewsFromInstagram}>
-                  <Tooltip title="Загрузить по ссылке" enterDelay={500} placement="left">
-                    <Icon>archive</Icon>
-                  </Tooltip>
-                </IconButton>
               </FormRow>
               <Comments>
                 <FieldArray name="comments" component={renderComments} />
@@ -295,7 +264,7 @@ class AddReviewDialog extends React.Component {
                   />
                 </div>
               </OrderWrap>
-              <Button onClick={this.handleClose} color="primary">
+              <Button onClick={handleClose} color="primary">
                 Отмена
               </Button>
               <Button type="submit" color="primary" disabled={!dirty || submitting || !valid || !hasImage}>
@@ -311,9 +280,11 @@ class AddReviewDialog extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    formValues: idx(state, _ => _.form.addReviewForm.values),
+    formValues: idx(state, _ => _.form.EditReviewForm.values),
     initialValues: {
-      order: ownProps.orderMax + 1
+      order: idx(ownProps, _ => _.review.order),
+      link: idx(ownProps, _ => _.review.link),
+      comments: idx(ownProps, _ => _.review.comments),
     }
   }
 };
@@ -324,8 +295,8 @@ export default compose(
     { createReviewItem }
   ),
   reduxForm({
-    form: 'addReviewForm',
+    form: 'EditReviewForm',
     validate,
     enableReinitialize: true,
   })
-)(AddReviewDialog);
+)(EditReviewDialog);

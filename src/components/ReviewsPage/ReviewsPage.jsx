@@ -12,6 +12,7 @@ import Spinner from '../Spinner';
 import ConfirmActionDialog from '../ConfirmActionDialog';
 import { getReviewsList, deleteReviewItem } from '../../redux/actions/reviews'; // deleteReviewsItem
 import AddReviewDialog from './AddReviewDialog';
+import EditReviewDialog from './EditReviewDialog';
 
 import styled from 'styled-components';
 
@@ -19,20 +20,17 @@ import styled from 'styled-components';
 
 import {
   ReviewBlock,
+  ReviewBlockControls,
   PageHead,
   Comment,
   CommentsWrap,
-  NewsWrap,
-  ImgWrap,
-  NewsBody,
-  Title,
-  Created,
-  Actions,
+  Controls,
+  Order,
+  PreviewImage,
   Error,
 } from './parts';
 
 
-import Review from './Review'
 
 
 
@@ -61,7 +59,7 @@ class ReviewsPage extends PureComponent {
   state = {
     reviewToDelete: '',
     openToast: false,
-    newsToEdit: null,
+    reviewToEdit: null,
     error: false
   };
 
@@ -111,6 +109,10 @@ class ReviewsPage extends PureComponent {
     this.setState({ reviewToDelete: review });
   };
 
+  selectReviewForEdit = (news) => {
+    this.setState({ reviewToEdit: news });
+  };
+
   getMaxOrder = (reviews) => {
     if (!reviews || reviews && !reviews.length) return '';
     return reviews.reduce((result, item) => {
@@ -121,20 +123,17 @@ class ReviewsPage extends PureComponent {
   // selectNewsForEdit = (news) => {
   //   this.setState({ newsToEdit: news });
   // };
-  //
-  // handleCloseEditDialog = () => {
-  //   this.setState({ newsToEdit: null });
-  // };
+
+  handleCloseEditDialog = () => {
+    this.setState({ reviewToEdit: null });
+  };
 
   render() {
-    const { reviewToDelete, newsToEdit, openToast, toastMessage, toastType, error } = this.state;
+    const { reviewToDelete, reviewToEdit, openToast, toastMessage, toastType, error } = this.state;
     const { reviews, isLoading } = this.props;
     console.log('>>>>>>>>', reviews);
 
     const orderMax = this.getMaxOrder(reviews);
-
-
-
 
     return (
       <Fragment>
@@ -154,6 +153,11 @@ class ReviewsPage extends PureComponent {
         <PageHead>
           Инстаграм отзывы
         </PageHead>
+        <Controls>
+          <AddReviewDialog orderMax={orderMax}/>
+          <EditReviewDialog open={!!reviewToEdit} review={reviewToEdit} handleClose={this.handleCloseEditDialog}/>
+        </Controls>
+
         {/*<p>Новости отсортированы по дате добавления - если необходимо изменить порядок вывода новостей, просто измените дату</p>*/}
         {/*<AddNewsDialog />*/}
         {/*<EditNewsDialog open={!!newsToEdit} news={newsToEdit} handleClose={this.handleCloseEditDialog}/>*/}
@@ -163,25 +167,19 @@ class ReviewsPage extends PureComponent {
 
 
 
-        <AddReviewDialog orderMax={orderMax}/>
-
-
-
-        {/*<Review form="mycustomformname" />*/}
-
-
-
 
         {
           reviews && reviews.length ? reviews.map(item => (
             <ReviewBlock key={item._id}>
-              <div style={{textAlign: 'right', margin: '0 -10px 0 -10px'}}>
-                <span>{item.order}</span>
+              <ReviewBlockControls>
+
+                <Order className={item.order ? '' : 'noorder'}>{item.order}</Order>
+
                 <IconButton
                   style={{color: '#9e9e9e'}}
                   aria-label="Delete"
                   color="primary"
-                  onClick={() => {}}
+                  onClick={() => this.selectReviewForEdit(item)}
                 >
                   <Tooltip title="Редактировать отзывы" enterDelay={500} placement="top" >
                     <Icon>edit</Icon>
@@ -197,10 +195,10 @@ class ReviewsPage extends PureComponent {
                     <Icon>delete</Icon>
                   </Tooltip>
                 </IconButton>
-              </div>
-              <a className="" href={item.link} target="_blank">
+              </ReviewBlockControls>
+              <PreviewImage className="" href={item.link} target="_blank">
                 <img src={baseURL + item.image} style={{width: '100%'}} alt=""/>
-              </a>
+              </PreviewImage>
               <CommentsWrap>
                 {
                   item.comments && item.comments.length ? item.comments.map(comment => (
