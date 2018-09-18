@@ -1,7 +1,7 @@
 import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { Field, FieldArray, reduxForm, reset, change } from 'redux-form';
+import { Field, FieldArray, reduxForm } from 'redux-form';
 import styled from 'styled-components';
 import validate from './validate';
 
@@ -13,9 +13,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Paper from "@material-ui/core/Paper/index";
 import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
-import Tooltip from '@material-ui/core/Tooltip';
 
-import { createReviewItem } from '../../../redux/actions/reviews';
+import { updateReviewItem } from '../../../redux/actions/reviews';
 
 import StyledTextField from '../../StyledTextField';
 import Toast from '../../Toast';
@@ -137,23 +136,7 @@ class EditReviewDialog extends React.Component {
     });
   };
 
-  handleClickOpen = () => {
-    this.setState({ open: true });
-  };
-
-  // handleClose = () => {
-  //   this.setState({ open: false });
-  //   this.props.dispatch(reset('addReviewForm'));
-  // };
-
   submitForm = async (values) => {
-
-    console.log('>>>> VALUES >>>>', values);
-    return false;
-
-
-
-
     const bodyFormData = new FormData();
     bodyFormData.append('comments', JSON.stringify(values.comments));
     bodyFormData.append('link', values.link);
@@ -165,18 +148,18 @@ class EditReviewDialog extends React.Component {
     }
     this.setState({ submitting: true });
     try {
-      await this.props.createReviewItem(bodyFormData);
+      await this.props.updateReviewItem(this.props.review._id, bodyFormData);
       this.setState({
         toastType: 'success',
-        toastMessage: 'Отзыв успешно создан',
+        toastMessage: 'Отзыв успешно обновлен',
         openToast: true,
         open: false,
         submitting: false,
       });
-      this.props.dispatch(reset('addReviewForm'));
+      this.props.handleClose();
     } catch(error) {
-      console.log('CREATE REVIEW ITEM ERROR: ', error.response);
-      const errMsg = 'Ошибка при попытке создать отзыв';
+      console.log('UPDATE REVIEW ITEM ERROR: ', error.response);
+      const errMsg = 'Ошибка при попытке обновить отзыв';
       this.setState({
         toastType: 'alert',
         toastMessage: errMsg,
@@ -198,15 +181,12 @@ class EditReviewDialog extends React.Component {
       formValues
     } = this.props;
     const { openToast, toastMessage, toastType, submitting } = this.state;
-    const hasImage = true; //(formValues && formValues.image) || previewObj.preview;
 
     const previewObj = review ? { preview: baseURL + review.image } : '';
+    const hasImage = (formValues && formValues.image) || previewObj && previewObj.preview;
 
     return (
       <div>
-        {/*<Button variant="contained" color="primary" onClick={this.handleClickOpen}>*/}
-          {/*Редактировать отзыв*/}
-        {/*</Button>*/}
         <Toast
           type={toastType}
           title={toastMessage}
@@ -280,7 +260,7 @@ class EditReviewDialog extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    formValues: idx(state, _ => _.form.EditReviewForm.values),
+    formValues: idx(state, _ => _.form.editReviewForm.values),
     initialValues: {
       order: idx(ownProps, _ => _.review.order),
       link: idx(ownProps, _ => _.review.link),
@@ -292,10 +272,10 @@ const mapStateToProps = (state, ownProps) => {
 export default compose(
   connect(
     mapStateToProps,
-    { createReviewItem }
+    { updateReviewItem }
   ),
   reduxForm({
-    form: 'EditReviewForm',
+    form: 'editReviewForm',
     validate,
     enableReinitialize: true,
   })

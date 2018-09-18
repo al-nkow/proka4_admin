@@ -1,7 +1,5 @@
-import { createReview, getAllReviews, deleteReview } from '../services/reviews';
+import { createReview, getAllReviews, deleteReview, updateReview } from '../services/reviews';
 import idx from 'idx';
-import {deleteNews} from "../services/news";
-import {getNewsList} from "./news";
 
 export const SET_REVIEWS = 'SET_REVIEWS';
 export const GET_REVIEWS_REQUEST = 'GET_REVIEWS_REQUEST';
@@ -9,6 +7,14 @@ export const GET_REVIEWS_SUCCESS = 'GET_REVIEWS_SUCCESS';
 
 export const createReviewItem = data => dispatch => {
   return createReview(data)
+    .then(res => {
+      dispatch(getReviewsList());
+      return res;
+    });
+};
+
+export const updateReviewItem = (id, data) => dispatch => {
+  return updateReview(id, data)
     .then(res => {
       dispatch(getReviewsList());
       return res;

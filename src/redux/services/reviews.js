@@ -9,6 +9,15 @@ export const createReview = data => {
   });
 };
 
+export const updateReview = (id, data) => {
+  return axios({
+    method: 'put',
+    url: `/reviews/${id}`,
+    data: data,
+    config: { headers: {'Content-Type': 'multipart/form-data' }}
+  });
+};
+
 export const getAllReviews = data =>
   axios.get('/reviews', {
     params: data,

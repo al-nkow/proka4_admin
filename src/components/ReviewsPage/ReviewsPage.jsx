@@ -120,10 +120,6 @@ class ReviewsPage extends PureComponent {
     }, 0);
   };
 
-  // selectNewsForEdit = (news) => {
-  //   this.setState({ newsToEdit: news });
-  // };
-
   handleCloseEditDialog = () => {
     this.setState({ reviewToEdit: null });
   };
@@ -131,8 +127,6 @@ class ReviewsPage extends PureComponent {
   render() {
     const { reviewToDelete, reviewToEdit, openToast, toastMessage, toastType, error } = this.state;
     const { reviews, isLoading } = this.props;
-    console.log('>>>>>>>>', reviews);
-
     const orderMax = this.getMaxOrder(reviews);
 
     return (
@@ -153,23 +147,15 @@ class ReviewsPage extends PureComponent {
         <PageHead>
           Инстаграм отзывы
         </PageHead>
+        <p>Отзывы отсортированы по номеру - если необходимо изменить порядок вывода, просто измените порядковый номер</p>
         <Controls>
           <AddReviewDialog orderMax={orderMax}/>
           <EditReviewDialog open={!!reviewToEdit} review={reviewToEdit} handleClose={this.handleCloseEditDialog}/>
         </Controls>
-
-        {/*<p>Новости отсортированы по дате добавления - если необходимо изменить порядок вывода новостей, просто измените дату</p>*/}
-        {/*<AddNewsDialog />*/}
-        {/*<EditNewsDialog open={!!newsToEdit} news={newsToEdit} handleClose={this.handleCloseEditDialog}/>*/}
-        { error && <Error>Ошибка сервера. Не удалось получить список новостей.</Error> }
+        { error && <Error>Ошибка сервера. Не удалось получить список отзывов.</Error> }
         { isLoading && <Spinner height={150} maxWidth={700}/>}
-
-
-
-
-
         {
-          reviews && reviews.length ? reviews.map(item => (
+          !isLoading && reviews && reviews.length ? reviews.map(item => (
             <ReviewBlock key={item._id}>
               <ReviewBlockControls>
 
@@ -212,39 +198,6 @@ class ReviewsPage extends PureComponent {
             </ReviewBlock>
           )) : ''
         }
-
-
-
-
-
-
-        {/*<NewsWrap>*/}
-          {/*{*/}
-            {/*news && news.length ? news.map((item) => (*/}
-              {/*<NewsBlock key={item._id}>*/}
-                {/*<ImgWrap>*/}
-                  {/*<img src={baseURL + item.image} alt=""/>*/}
-                {/*</ImgWrap>*/}
-                {/*<NewsBody>*/}
-                  {/*<Title>{item.title}</Title>*/}
-                  {/*<Created>{moment(item.date).format('DD.MM.YYYY HH:mm')}</Created>*/}
-                  {/*<Actions>*/}
-                    {/*<IconButton aria-label="Edit" onClick={() => { this.selectNewsForEdit(item) } }>*/}
-                      {/*<Tooltip title="Редактировать новость" enterDelay={500} placement="top">*/}
-                        {/*<Icon>edit</Icon>*/}
-                      {/*</Tooltip>*/}
-                    {/*</IconButton>*/}
-                    {/*<IconButton aria-label="Delete" onClick={() => { this.selectNewsForDelete(item) } }>*/}
-                      {/*<Tooltip title="Удалить новость" enterDelay={500} placement="top" >*/}
-                        {/*<Icon>delete</Icon>*/}
-                      {/*</Tooltip>*/}
-                    {/*</IconButton>*/}
-                  {/*</Actions>*/}
-                {/*</NewsBody>*/}
-              {/*</NewsBlock>*/}
-            {/*)) : ''*/}
-          {/*}*/}
-        {/*</NewsWrap>*/}
       </Fragment>
     )
   }

@@ -115,7 +115,7 @@ class NewsPage extends PureComponent {
         { isLoading && <Spinner height={150} maxWidth={700}/>}
         <NewsWrap>
           {
-            news && news.length ? news.map((item) => (
+            !isLoading && news && news.length ? news.map((item) => (
               <NewsBlock key={item._id}>
                 <ImgWrap>
                   <img src={baseURL + item.image} alt=""/>

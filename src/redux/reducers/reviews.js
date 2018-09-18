@@ -25,12 +25,6 @@ export default (state = INIT_STATE, action) => {
         isLoading: false,
         loadingStatus: 'SUCCESS',
       };
-    // case GET_NEWS_FAIL:
-    //   return {
-    //     ...state,
-    //     isLoading: false,
-    //     loadingStatus: 'FAIL',
-    //   };
     case SET_REVIEWS: {
       // const { list, totalCount } = action.payload;
       return {
