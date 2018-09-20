@@ -2,10 +2,12 @@ import axios from 'axios';
 import history from '../history';
 // import { REACT_APP_DEV_API_URL } from '../shared/env';
 
-export const saveToken = token => {
-  if (!token) return;
-  localStorage.setItem('token', token);
-  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+export const saveToken = data => {
+  if (!data.token) return;
+  localStorage.setItem('token', data.token);
+  localStorage.setItem('refreshToken', data.refreshToken);
+  localStorage.setItem('expires_in', data.expires_in);
+  axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
 };
 
 export const saveUserRole = role => {
@@ -20,9 +22,47 @@ export const clearToken = () => {
 
 export default () => {
   const token = localStorage.getItem('token');
+  const baseUrl = process.env.NODE_ENV === 'production' ? 'http://37.140.198.199:3000' : 'http://localhost:3000'; // REACT_APP_DEV_API_URL
 
 
-  axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? 'http://37.140.198.199:3000' : 'http://localhost:3000'; // REACT_APP_DEV_API_URL
+
+  axios.interceptors.request.use(
+    async config => {
+
+      console.log('>>>>>>> INTERCEPROR >>>>>>>', config);
+      const result = await fetch(baseUrl + '/user/token', {
+        method: 'post',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ token: '1234567' })
+      });
+      const content = await result.json();
+      console.log('>>>>>>> INTERCEPROR RESULT >>>>>>>', content);
+
+
+      // const result = await axios.post('/user/token', { token: '123456' });
+      // console.log('>>>>>>> INTERCEPROR RESULT >>>>>>>', result);
+
+      // if (config.baseURL === baseApiAddress && !config.headers.Authorization) {
+      //   const token = getToken();
+      //
+      //   if (token) {
+      //     config.headers.Authorization = `Bearer ${token}`;
+      //   }
+      // }
+
+      return config;
+    },
+    error => Promise.reject(error)
+  );
+
+
+
+
+
+  axios.defaults.baseURL = baseUrl;
   // Add a response interceptor
   axios.interceptors.response.use((response) => {
     return response;

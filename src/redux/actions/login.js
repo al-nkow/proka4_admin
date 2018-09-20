@@ -16,7 +16,7 @@ const login = ({ email, password }) => dispatch => {
 
   //     dispatch(loginSuccess());
       if (data) {
-        saveToken(data.token);
+        saveToken(data);
         history.push('/');
 
   //       saveUserRole(data.role);
