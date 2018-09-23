@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import MenuItem from './MenuItem';
+import history from "../../history";
 
 const Wrap = styled.div`
   box-sizing: border-box;
@@ -20,6 +21,7 @@ const Sidebar = styled.div`
   background: linear-gradient(to bottom, #2e3340 0%,#323441 100%);
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2e3340', endColorstr='#323441',GradientType=0 );
   box-shadow: 0 0 10px rgba(0,0,0,0.4);
+  position: relative;
 `;
 
 const Content = styled.div`
@@ -41,6 +43,19 @@ const SidebarHead = styled.div`
   }
 `;
 
+const Exit = styled.div`
+  padding: 20px 40px;
+  cursor: pointer;
+  color: #ffffff;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  &:hover {
+    background: rgba(255,255,255,0.2);
+  }
+`;
+
 class AppContainer extends PureComponent {
   // componentDidMount() {
   //   const {
@@ -52,6 +67,12 @@ class AppContainer extends PureComponent {
   //   }
   // }
 
+  exit = () => {
+    localStorage.clear();
+    history.push('/login');
+    // TODO - add request and clear tokens on server (refreshToken in DB)
+  };
+
   render() {
     return (
       <Wrap>
@@ -62,6 +83,8 @@ class AppContainer extends PureComponent {
           <MenuItem name="Пользователи" icon="people" link="/users" />
           <MenuItem name="Новости" icon="access_time" link="/news" />
           <MenuItem name="Отзывы" icon="rate_review" link="/reviews" />
+
+          <Exit onClick={this.exit}>Выход</Exit>
         </Sidebar>
         <Content>{this.props.children}</Content>
       </Wrap>

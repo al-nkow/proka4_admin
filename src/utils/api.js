@@ -24,45 +24,33 @@ export default () => {
   const token = localStorage.getItem('token');
   const baseUrl = process.env.NODE_ENV === 'production' ? 'http://37.140.198.199:3000' : 'http://localhost:3000'; // REACT_APP_DEV_API_URL
 
-
-
   axios.interceptors.request.use(
     async config => {
+      if (localStorage.getItem('expires_in') * 1000 >=  Date.now()) return config;
+      const refreshToken = localStorage.getItem('refreshToken');
+      if (!refreshToken) return config;
 
-      console.log('>>>>>>> INTERCEPROR >>>>>>>', config);
       const result = await fetch(baseUrl + '/user/token', {
         method: 'post',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ token: '1234567' })
+        body: JSON.stringify({ token: refreshToken })
       });
-      const content = await result.json();
-      console.log('>>>>>>> INTERCEPROR RESULT >>>>>>>', content);
 
+      const newAuthData = await result.json();
 
-      // const result = await axios.post('/user/token', { token: '123456' });
-      // console.log('>>>>>>> INTERCEPROR RESULT >>>>>>>', result);
-
-      // if (config.baseURL === baseApiAddress && !config.headers.Authorization) {
-      //   const token = getToken();
-      //
-      //   if (token) {
-      //     config.headers.Authorization = `Bearer ${token}`;
-      //   }
-      // }
+      saveToken(newAuthData);
+      if (newAuthData.token) config.headers.Authorization = `Bearer ${newAuthData.token}`;
 
       return config;
     },
     error => Promise.reject(error)
   );
 
-
-
-
-
   axios.defaults.baseURL = baseUrl;
+
   // Add a response interceptor
   axios.interceptors.response.use((response) => {
     return response;
