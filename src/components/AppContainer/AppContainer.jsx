@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import MenuItem from './MenuItem';
 import history from "../../history";
+import {logout} from '../../redux/actions/users';
+import {connect} from "react-redux";
 
 const Wrap = styled.div`
   box-sizing: border-box;
@@ -68,9 +70,10 @@ class AppContainer extends PureComponent {
   // }
 
   exit = () => {
+    const refreshToken = localStorage.getItem('refreshToken');
+    this.props.logout({ token: refreshToken });
     localStorage.clear();
     history.push('/login');
-    // TODO - add request and clear tokens on server (refreshToken in DB)
   };
 
   render() {
@@ -92,4 +95,4 @@ class AppContainer extends PureComponent {
   }
 }
 
-export default AppContainer;
+export default connect(null, { logout })(AppContainer);

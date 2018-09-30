@@ -56,6 +56,7 @@ class EditNewsDialog extends React.Component {
     const bodyFormData = new FormData();
     bodyFormData.append('date', moment(values.date).utc().format());
     bodyFormData.append('title', values.title);
+    bodyFormData.append('link', values.link);
     if (values.image) bodyFormData.append('newsImage', values.image[0]);
     this.setState({ submitting: true });
     try {
@@ -129,6 +130,14 @@ class EditNewsDialog extends React.Component {
               </FieldWrap>
               <FieldWrap>
                 <Field
+                  name="link"
+                  label="Ссылка на новость"
+                  type="text"
+                  component={StyledTextField}
+                />
+              </FieldWrap>
+              <FieldWrap>
+                <Field
                   name="title"
                   label="Заголовок новости"
                   type="text"
@@ -158,7 +167,8 @@ class EditNewsDialog extends React.Component {
 const mapStateToProps = (state, ownProps) => ({
   initialValues: {
     date: moment(new Date(idx(ownProps, _ => _.news.date))).format('YYYY-MM-DDTHH:mm'),
-    title: idx(ownProps, _ => _.news.title)
+    title: idx(ownProps, _ => _.news.title),
+    link: idx(ownProps, _ => _.news.link),
   }
 });
 

@@ -57,6 +57,7 @@ class AddNewsDialog extends React.Component {
     const bodyFormData = new FormData();
     bodyFormData.append('date', moment(values.date).utc().format());
     bodyFormData.append('title', values.title);
+    bodyFormData.append('link', values.link);
     bodyFormData.append('newsImage', values.image[0]);
     // Show FormData content:
     // for (var key of bodyFormData.entries()) {
@@ -154,6 +155,14 @@ class AddNewsDialog extends React.Component {
               </FieldWrap>
               <FieldWrap>
                 <Field
+                  name="link"
+                  label="Ссылка на новость"
+                  type="text"
+                  component={StyledTextField}
+                />
+              </FieldWrap>
+              <FieldWrap>
+                <Field
                   name="title"
                   label="Заголовок новости"
                   type="text"
@@ -187,7 +196,8 @@ const mapStateToProps = state => {
       initialValues: {
         date: CurrentDate,
         image: null,
-        title: null
+        title: null,
+        link: null
     }
   }
 };

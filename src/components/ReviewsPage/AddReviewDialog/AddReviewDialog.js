@@ -203,6 +203,7 @@ class AddReviewDialog extends React.Component {
         openToast: true,
         open: false,
         submitting: false,
+        previewObj: ''
       });
       this.props.dispatch(reset('addReviewForm'));
     } catch(error) {

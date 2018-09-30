@@ -12,8 +12,6 @@ const login = ({ email, password }) => dispatch => {
     .then((result) => {
       const { data } = result;
 
-      console.log('LOGIN RESULT: ', data);
-
   //     dispatch(loginSuccess());
       if (data) {
         saveToken(data);

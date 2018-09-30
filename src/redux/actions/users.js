@@ -1,4 +1,4 @@
-import { getAllUsers, signupUser, deleteUser } from '../services/users';
+import { getAllUsers, signupUser, deleteUser, logoutUser } from '../services/users';
 
 export const SET_USERS = 'SET_USERS';
 export const GET_USERS_REQUEST = 'GET_USERS_REQUEST';
@@ -37,6 +37,14 @@ export const removeUser = id => dispatch => {
     .then(res => {
       console.log('DELETE USER RESULT: ', res);
       dispatch(getUsersList());
+      return res;
+    });
+};
+
+export const logout = data => dispatch => {
+  return logoutUser(data)
+    .then(res => {
+      console.log('LOGOUT USER RESULT: ', res);
       return res;
     });
 };
