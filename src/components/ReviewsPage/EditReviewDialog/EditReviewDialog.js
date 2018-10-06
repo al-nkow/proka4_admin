@@ -24,7 +24,7 @@ import Spinner from '../../Spinner';
 import idx from 'idx';
 
 const MAX_UPLOADED_FILE_SIZE = 1024 * 1024 * 2;
-const baseURL = process.env.NODE_ENV === 'production' ? 'http://37.140.198.199:3000' : 'http://localhost:3000';
+const baseURL = process.env.NODE_ENV === 'production' ? 'http://185.20.224.109:3000' : 'http://localhost:3000';
 
 const FieldWrap = styled.div`
   margin-bottom: 20px;

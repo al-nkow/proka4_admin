@@ -22,7 +22,7 @@ export const clearToken = () => {
 
 export default () => {
   const token = localStorage.getItem('token');
-  const baseUrl = process.env.NODE_ENV === 'production' ? 'http://37.140.198.199:3000' : 'http://localhost:3000'; // REACT_APP_DEV_API_URL
+  const baseUrl = process.env.NODE_ENV === 'production' ? 'http://185.20.224.109:3000' : 'http://localhost:3000'; // REACT_APP_DEV_API_URL
 
   axios.interceptors.request.use(
     async config => {

@@ -4,11 +4,13 @@ import users from './users';
 import content from './content';
 import news from './news';
 import reviews from './reviews';
+import faq from './faq';
 
 export default combineReducers({
   form: formReducer,
   users,
   content,
   news,
-  reviews
+  reviews,
+  faq
 });
