@@ -57,7 +57,7 @@ class AddNewsDialog extends React.Component {
     const bodyFormData = new FormData();
     bodyFormData.append('date', moment(values.date).utc().format());
     bodyFormData.append('title', values.title);
-    bodyFormData.append('link', values.link);
+    if (values.link) bodyFormData.append('link', values.link);
     bodyFormData.append('newsImage', values.image[0]);
     // Show FormData content:
     // for (var key of bodyFormData.entries()) {

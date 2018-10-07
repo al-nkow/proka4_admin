@@ -9,7 +9,7 @@ export const Error = styled.div`
 
 export const NewsBlock = styled(Paper)`
   margin-bottom: 10px;
-  max-width: 700px;
+  max-width: 800px;
   overflow: hidden;
   display: flex;
   flex-direction: row;
