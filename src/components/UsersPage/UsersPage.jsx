@@ -14,6 +14,7 @@ import { getUsersList, removeUser } from '../../redux/actions/users';
 import Toast from '../Toast';
 import ConfirmActionDialog from '../ConfirmActionDialog';
 import AddUserDialog from './AddUserDialog';
+import ChangePasswordDialog from './ChangePasswordDialog';
 
 const TableWrap = styled.div`
   max-width: 800px;
@@ -32,7 +33,9 @@ const StyledTable = styled(Table)`
 class UsersPage extends PureComponent {
   state = {
     userToDelete: '',
-    openToast: false
+    userChangePassword: '',
+    openToast: false,
+    currentUserId: localStorage.getItem('id'),
   };
 
   componentDidMount() {
@@ -57,6 +60,10 @@ class UsersPage extends PureComponent {
     this.setState({ userToDelete: n });
   };
 
+  setUserChangePassword = (n) => {
+    this.setState({ userChangePassword: n });
+  }
+
   deleteUser = async () => {
     try {
       await this.props.removeUser(this.state.userToDelete._id);
@@ -78,7 +85,7 @@ class UsersPage extends PureComponent {
   };
 
   render() {
-    const { userToDelete, openToast, toastMessage, toastType } = this.state;
+    const { userToDelete, openToast, toastMessage, toastType, currentUserId, userChangePassword } = this.state;
     const { usersList } = this.props;
     return (
       <Fragment>
@@ -96,7 +103,7 @@ class UsersPage extends PureComponent {
           action={this.deleteUser}
         />
         <PageHead>
-          Users
+          Пользователи
         </PageHead>
         <TableWrap>
           {
@@ -106,7 +113,7 @@ class UsersPage extends PureComponent {
                   <TableHead>
                     <TableRow>
                       <TableCell />
-                      <TableCell>ID</TableCell>
+                      <TableCell>Имя</TableCell>
                       <TableCell numeric>Email</TableCell>
                       <TableCell />
                     </TableRow>
@@ -117,12 +124,18 @@ class UsersPage extends PureComponent {
                         <TableRow key={n._id}>
                           <TableCell numeric>{i + 1}</TableCell>
                           <TableCell component="th" scope="row">
-                            {n._id}
+                            {n.name || 'no name'}
                           </TableCell>
                           <TableCell numeric>{n.email}</TableCell>
                           <TableCell numeric>
                             {
-                              n.email === 'admin@admin.com' ? '' : (
+                              n._id === currentUserId ? (
+                                <IconButton aria-label="Delete" onClick={() => this.setUserChangePassword(n)}>
+                                  <Tooltip title="Изменить пароль" enterDelay={500} placement="left">
+                                    <Icon>update</Icon>
+                                  </Tooltip>
+                                </IconButton>
+                              ) : (
                                 <IconButton aria-label="Delete" onClick={() => this.deleteUserButtonClick(n)}>
                                   <Tooltip title="Удалить пользователя" enterDelay={500} placement="left">
                                     <Icon>delete</Icon>
@@ -141,6 +154,11 @@ class UsersPage extends PureComponent {
           }
         </TableWrap>
         <AddUserDialog />
+        <ChangePasswordDialog
+          open={!!userChangePassword}
+          user={userChangePassword}
+          handleClose={() => this.setUserChangePassword('')}
+        />
       </Fragment>
     )
   }

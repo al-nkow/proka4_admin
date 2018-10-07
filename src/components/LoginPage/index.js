@@ -6,6 +6,7 @@ import validate from './validate';
 import login from '../../redux/actions/login';
 import StyledTextField from '../StyledTextField';
 import StyledPasswordField from '../StyledPasswordField';
+import idx from 'idx';
 
 import {
   Wrapper,
@@ -37,8 +38,9 @@ class LoginPage extends PureComponent {
   onSubmit = values => {
     const { login } = this.props;
     login(values).catch((err) => {
-      console.log('LOGIN ERROR: ', err.response);
-      this.showError(err.response.status);
+      console.log('LOGIN ERROR: ', err);
+      const errorText = idx(err, _ => _.response.text) || 'Ошибка';
+      this.showError(errorText);
     });
   };
 

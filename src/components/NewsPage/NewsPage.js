@@ -23,7 +23,7 @@ import {
   Error,
 } from './parts';
 
-const baseURL = process.env.NODE_ENV === 'production' ? 'http://185.20.224.109:3000' : 'http://localhost:3000';
+const baseURL = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_API_URL : process.env.REACT_APP_DEV_API_URL;
 
 class NewsPage extends PureComponent {
   state = {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { Field, reduxForm, reset } from 'redux-form';
+import {Field, reduxForm, reset} from 'redux-form';
 import styled from 'styled-components';
 
 import Button from '@material-ui/core/Button';
@@ -10,10 +10,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-import { createQuestionItem } from '../../../redux/actions/faq';
+import { changePassword } from '../../../redux/actions/users';
 
 import validate from './validate';
-import StyledTextField from '../../StyledTextField';
+import StyledPasswordField from '../../StyledPasswordField';
 import Toast from '../../Toast';
 import Spinner from '../../Spinner';
 
@@ -35,9 +35,8 @@ const FormBlock = styled.form`
   min-width: 400px;
 `;
 
-class AddQuestionDialog extends React.Component {
+class ChangePasswordDialog extends React.Component {
   state = {
-    open: false,
     openToast: false,
     toastMessage: '',
     toastType: '',
@@ -50,40 +49,36 @@ class AddQuestionDialog extends React.Component {
       toastType: '',
       toastMessage: ''
     });
+    this.props.dispatch(reset('changePasswordForm'));
   };
 
   submitForm = async (values) => {
+    const data = {
+      password: values.password,
+      newpassword: values.newpassword,
+      id: this.props.user._id
+    };
     this.setState({ submitting: true });
     try {
-      await this.props.createQuestionItem(values);
+      await this.props.changePassword(data);
       this.setState({
         toastType: 'success',
-        toastMessage: 'Новый вопрос успешно создан',
+        toastMessage: 'Пароль успешно изменён',
         openToast: true,
-        open: false,
         submitting: false,
       });
-      this.props.dispatch(reset('addQuestionForm'));
+      this.props.handleClose();
     } catch(error) {
-      console.log('CREATE QUESTION ITEM ERROR: ', error.response);
-      const errMsg = 'Ошибка при попытке создать вопрос';
+      console.log('UPDATE QUESTION ERROR: ', error.response);
+      const errMsg = 'Ошибка при попытке изменить пароль';
       this.setState({
         toastType: 'alert',
         toastMessage: errMsg,
         openToast: true,
-        open: false,
         submitting: false,
       });
+      this.props.handleClose();
     }
-  };
-
-  handleClickOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleClose = () => {
-    this.setState({ open: false });
-    this.props.dispatch(reset('addQuestionForm'));
   };
 
   render() {
@@ -94,12 +89,10 @@ class AddQuestionDialog extends React.Component {
     } = this.props;
 
     const { openToast, toastMessage, toastType, submitting } = this.state;
+    const { open, handleClose } = this.props;
 
     return (
       <div>
-        <Button variant="contained" color="primary" onClick={this.handleClickOpen}>
-          Добавить вопрос
-        </Button>
         <Toast
           type={toastType}
           title={toastMessage}
@@ -109,41 +102,41 @@ class AddQuestionDialog extends React.Component {
         />
 
         <Dialog
-          open={this.state.open}
-          onClose={this.handleClose}
+          open={open}
+          onClose={handleClose}
           aria-labelledby="form-dialog-title"
         >
           { submitting && <Spinner abs={true} /> }
           <FormBlock onSubmit={handleSubmit(this.submitForm)}>
-            <StyledDialogTitle id="form-dialog-title">Добавить вопрос</StyledDialogTitle>
+            <StyledDialogTitle id="form-dialog-title">Изменить пароль</StyledDialogTitle>
             <DialogContent>
               <FieldWrap>
                 <Field
-                  name="question"
-                  label="Вопрос"
+                  name="password"
+                  label="Пароль"
                   type="text"
-                  fieldProps={{
-                    multiline: true,
-                    inputProps: { maxLength: 1000 },
-                  }}
-                  component={StyledTextField}
+                  component={StyledPasswordField}
                 />
               </FieldWrap>
               <FieldWrap>
                 <Field
-                  name="answer"
-                  label="Ответ"
+                  name="newpassword"
+                  label="Новый пароль"
                   type="text"
-                  fieldProps={{
-                    multiline: true,
-                    inputProps: { maxLength: 1000 },
-                  }}
-                  component={StyledTextField}
+                  component={StyledPasswordField}
+                />
+              </FieldWrap>
+              <FieldWrap>
+                <Field
+                  name="newpasswordagain"
+                  label="Новый пароль еще раз"
+                  type="text"
+                  component={StyledPasswordField}
                 />
               </FieldWrap>
             </DialogContent>
             <DialogActions>
-              <Button onClick={this.handleClose} color="primary">
+              <Button onClick={handleClose} color="primary">
                 Отмена
               </Button>
               <Button type="submit" color="primary" disabled={!dirty || submitting || !valid}>
@@ -166,11 +159,11 @@ const mapStateToProps = state => {
 export default compose(
   connect(
     mapStateToProps,
-    { createQuestionItem }
+    { changePassword }
   ),
   reduxForm({
-    form: 'addQuestionForm',
+    form: 'changePasswordForm',
     validate,
     enableReinitialize: true,
   })
-)(AddQuestionDialog);
+)(ChangePasswordDialog);

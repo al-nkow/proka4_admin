@@ -1,7 +1,7 @@
 import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { Field, reduxForm, reset } from 'redux-form';
+import { Field, reduxForm } from 'redux-form';
 import styled from 'styled-components';
 
 import Button from '@material-ui/core/Button';
@@ -53,12 +53,6 @@ class EditQuestionDialog extends React.Component {
     });
   };
 
-
-
-
-
-
-
   submitForm = async (values) => {
     this.setState({ submitting: true });
     try {
@@ -81,17 +75,6 @@ class EditQuestionDialog extends React.Component {
       });
       this.props.handleClose();
     }
-  };
-
-
-
-
-
-
-
-
-  handleClickOpen = () => {
-    this.setState({ open: true });
   };
 
   render() {
@@ -128,6 +111,10 @@ class EditQuestionDialog extends React.Component {
                   name="question"
                   label="Вопрос"
                   type="text"
+                  fieldProps={{
+                    multiline: true,
+                    inputProps: { maxLength: 1000 },
+                  }}
                   component={StyledTextField}
                 />
               </FieldWrap>
@@ -138,7 +125,7 @@ class EditQuestionDialog extends React.Component {
                   type="text"
                   fieldProps={{
                     multiline: true,
-                    inputProps: { maxLength: 300 },
+                    inputProps: { maxLength: 1000 },
                   }}
                   component={StyledTextField}
                 />

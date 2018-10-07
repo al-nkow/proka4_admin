@@ -28,7 +28,7 @@ const PageHead = styled.div`
 const StyledPaper = styled(Paper)`
   padding: 10px;
   margin-bottom: 10px;
-  max-width: 600px;
+  max-width: 700px;
 `;
 
 const QuestionsWrap = styled.div`
@@ -103,7 +103,7 @@ class FaqPage extends PureComponent {
       });
     }
   };
-  
+
   render() {
     const { questionToDelete, questionForEdit, openToast, toastMessage, toastType, error } = this.state;
     const { questionsList, isLoading } = this.props;

@@ -7,6 +7,7 @@ export const saveToken = data => {
   localStorage.setItem('token', data.token);
   localStorage.setItem('refreshToken', data.refreshToken);
   localStorage.setItem('expires_in', data.expires_in);
+  localStorage.setItem('id', data.id);
   axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
 };
 
@@ -17,12 +18,17 @@ export const saveUserRole = role => {
 
 export const clearToken = () => {
   localStorage.setItem('token', undefined);
+
+  localStorage.setItem('refreshToken', undefined);
+  localStorage.setItem('expires_in', undefined);
+  localStorage.setItem('id', undefined);
+
   axios.defaults.headers.common['Authorization'] = undefined;
 };
 
 export default () => {
   const token = localStorage.getItem('token');
-  const baseUrl = process.env.NODE_ENV === 'production' ? 'http://185.20.224.109:3000' : 'http://localhost:3000'; // REACT_APP_DEV_API_URL
+  const baseUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_API_URL : process.env.REACT_APP_DEV_API_URL;
 
   axios.interceptors.request.use(
     async config => {

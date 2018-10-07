@@ -7,7 +7,9 @@ export default values => {
   } else if (!isValidEmail(values.email)) {
     errors.email = 'Неправильный формат';
   }
-
+  if (!values.name) {
+    errors.name = 'Это поле обязательно для заполнения';
+  }
   if (!values.password) {
     errors.password = 'Это поле обязательно для заполнения';
   }

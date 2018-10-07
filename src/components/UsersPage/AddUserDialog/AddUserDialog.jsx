@@ -108,6 +108,9 @@ class AddUserDialog extends React.Component {
                 {/*Заполните поля ниже чтобы добавить пользователя в систему.*/}
               {/*</DialogContentText>*/}
                 <FieldWrap>
+                  <Field name='name' label='Имя' type='text' component={StyledTextField} />
+                </FieldWrap>
+                <FieldWrap>
                   <Field name='email' label='Адрес эл.почты' type='text' component={StyledTextField} />
                 </FieldWrap>
                 <FieldWrap>

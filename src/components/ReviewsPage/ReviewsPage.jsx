@@ -1,22 +1,15 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'react-redux';
 import idx from 'idx';
-import moment from 'moment';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-// import AddNewsDialog from './AddNewsDialog';
-// import EditNewsDialog from './EditNewsDialog';
 import Toast from '../Toast';
 import Spinner from '../Spinner';
 import ConfirmActionDialog from '../ConfirmActionDialog';
-import { getReviewsList, deleteReviewItem } from '../../redux/actions/reviews'; // deleteReviewsItem
+import { getReviewsList, deleteReviewItem } from '../../redux/actions/reviews';
 import AddReviewDialog from './AddReviewDialog';
 import EditReviewDialog from './EditReviewDialog';
-
-import styled from 'styled-components';
-
-
 
 import {
   ReviewBlock,
@@ -30,30 +23,7 @@ import {
   Error,
 } from './parts';
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const baseURL = process.env.NODE_ENV === 'production' ? 'http://185.20.224.109:3000' : 'http://localhost:3000';
+const baseURL = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_API_URL : process.env.REACT_APP_DEV_API_URL;
 
 class ReviewsPage extends PureComponent {
   state = {
@@ -114,7 +84,7 @@ class ReviewsPage extends PureComponent {
   };
 
   getMaxOrder = (reviews) => {
-    if (!reviews || reviews && !reviews.length) return '';
+    if (!reviews || (reviews && !reviews.length)) return '';
     return reviews.reduce((result, item) => {
       return item.order && (item.order > result) ? item.order : result;
     }, 0);

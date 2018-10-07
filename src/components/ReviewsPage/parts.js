@@ -34,8 +34,7 @@ export const Order = styled.div`
 `;
 
 export const Controls = styled.div`
-  padding: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 `;
 
 export const Comment = styled.div`
@@ -47,14 +46,13 @@ export const CommentsWrap = styled.div`
   overflow: auto;
 `;
 
-
 export const Error = styled.div`
   padding: 40px 0;
   color: ${error.main};
 `;
 
 export const ReviewBlock = styled(Paper)`
-  margin: 10px;
+  margin: 15px 15px 15px 0;
   padding: 0 10px 10px 10px;
   max-width: 200px;
   overflow: hidden;

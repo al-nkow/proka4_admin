@@ -1,4 +1,4 @@
-import { getAllUsers, signupUser, deleteUser, logoutUser } from '../services/users';
+import { getAllUsers, signupUser, deleteUser, logoutUser, changeUsersPassword } from '../services/users';
 
 export const SET_USERS = 'SET_USERS';
 export const GET_USERS_REQUEST = 'GET_USERS_REQUEST';
@@ -45,6 +45,14 @@ export const logout = data => dispatch => {
   return logoutUser(data)
     .then(res => {
       console.log('LOGOUT USER RESULT: ', res);
+      return res;
+    });
+};
+
+export const changePassword = data => dispatch => {
+  return changeUsersPassword(data)
+    .then(res => {
+      console.log('CHANGE USERS PASSWORD RESULT: ', res);
       return res;
     });
 };
