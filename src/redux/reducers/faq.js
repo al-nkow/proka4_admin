@@ -2,7 +2,7 @@ import {
   SET_FAQ,
   GET_FAQ_REQUEST,
   GET_FAQ_SUCCESS,
-  // GET_NEWS_FAIL,
+  GET_FAQ_FAIL,
 } from '../actions/faq';
 
 const INIT_STATE = {
@@ -25,12 +25,12 @@ export default (state = INIT_STATE, action) => {
         isLoading: false,
         loadingStatus: 'SUCCESS',
       };
-    // case GET_NEWS_FAIL:
-    //   return {
-    //     ...state,
-    //     isLoading: false,
-    //     loadingStatus: 'FAIL',
-    //   };
+    case GET_FAQ_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+        loadingStatus: 'FAIL',
+      };
     case SET_FAQ: {
       // const { list, totalCount } = action.payload;
       return {

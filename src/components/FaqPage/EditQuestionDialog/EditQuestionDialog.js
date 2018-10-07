@@ -10,12 +10,13 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-import { createQuestionItem } from '../../../redux/actions/faq';
+import { updateQuestion } from '../../../redux/actions/faq';
 
 import validate from './validate';
 import StyledTextField from '../../StyledTextField';
 import Toast from '../../Toast';
 import Spinner from '../../Spinner';
+import idx from "idx/lib/idx";
 
 const FieldWrap = styled.div`
   margin-bottom: 20px;
@@ -35,7 +36,7 @@ const FormBlock = styled.form`
   min-width: 400px;
 `;
 
-class AddQuestionDialog extends React.Component {
+class EditQuestionDialog extends React.Component {
   state = {
     open: false,
     openToast: false,
@@ -52,38 +53,45 @@ class AddQuestionDialog extends React.Component {
     });
   };
 
+
+
+
+
+
+
   submitForm = async (values) => {
     this.setState({ submitting: true });
     try {
-      await this.props.createQuestionItem(values);
+      await this.props.updateQuestion(this.props.question._id, values);
       this.setState({
         toastType: 'success',
-        toastMessage: 'Новый вопрос успешно создан',
+        toastMessage: 'Вопрос успешно отредактитрован',
         openToast: true,
-        open: false,
         submitting: false,
       });
-      this.props.dispatch(reset('addQuestionForm'));
+      this.props.handleClose();
     } catch(error) {
-      console.log('CREATE QUESTION ITEM ERROR: ', error.response);
-      const errMsg = 'Ошибка при попытке создать вопрос';
+      console.log('UPDATE QUESTION ERROR: ', error.response);
+      const errMsg = 'Ошибка при попытке изменить вопрос';
       this.setState({
         toastType: 'alert',
         toastMessage: errMsg,
         openToast: true,
-        open: false,
         submitting: false,
       });
+      this.props.handleClose();
     }
   };
 
+
+
+
+
+
+
+
   handleClickOpen = () => {
     this.setState({ open: true });
-  };
-
-  handleClose = () => {
-    this.setState({ open: false });
-    this.props.dispatch(reset('addQuestionForm'));
   };
 
   render() {
@@ -94,12 +102,10 @@ class AddQuestionDialog extends React.Component {
     } = this.props;
 
     const { openToast, toastMessage, toastType, submitting } = this.state;
+    const { open, handleClose } = this.props;
 
     return (
       <div>
-        <Button variant="contained" color="primary" onClick={this.handleClickOpen}>
-          Добавить вопрос
-        </Button>
         <Toast
           type={toastType}
           title={toastMessage}
@@ -109,13 +115,13 @@ class AddQuestionDialog extends React.Component {
         />
 
         <Dialog
-          open={this.state.open}
+          open={open}
           onClose={this.handleClose}
           aria-labelledby="form-dialog-title"
         >
           { submitting && <Spinner abs={true} /> }
           <FormBlock onSubmit={handleSubmit(this.submitForm)}>
-            <StyledDialogTitle id="form-dialog-title">Добавить вопрос</StyledDialogTitle>
+            <StyledDialogTitle id="form-dialog-title">Редактировать вопрос</StyledDialogTitle>
             <DialogContent>
               <FieldWrap>
                 <Field
@@ -139,7 +145,7 @@ class AddQuestionDialog extends React.Component {
               </FieldWrap>
             </DialogContent>
             <DialogActions>
-              <Button onClick={this.handleClose} color="primary">
+              <Button onClick={handleClose} color="primary">
                 Отмена
               </Button>
               <Button type="submit" color="primary" disabled={!dirty || submitting || !valid}>
@@ -153,24 +159,24 @@ class AddQuestionDialog extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, ownProps) => {
   return {
     stateObj: state,
-    // initialValues: {
-    //   answer: null,
-    //   question: null
-    // }
+    initialValues: {
+      answer: idx(ownProps, _ => _.question.answer),
+      question: idx(ownProps, _ => _.question.question)
+    }
   }
 };
 
 export default compose(
   connect(
     mapStateToProps,
-    { createQuestionItem }
+    { updateQuestion }
   ),
   reduxForm({
-    form: 'addQuestionForm',
+    form: 'editQuestionForm',
     validate,
     enableReinitialize: true,
   })
-)(AddQuestionDialog);
+)(EditQuestionDialog);
