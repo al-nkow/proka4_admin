@@ -20,7 +20,7 @@ const StyledPaper = styled(Paper)`
   box-sizing: border-box;
   padding: 15px 52px 15px 15px;
   margin-bottom: 10px;
-  max-width: 700px;
+  max-width: 670px;
   position: relative;
   .delete-button {
     position: absolute;
@@ -42,7 +42,7 @@ const StyledDropzone = styled(Dropzone)`
   padding: 20px;
   margin-bottom: 20px;
   border: 2px dashed ${primary.main};
-  max-width: 700px;
+  max-width: 670px;
   text-align: center;
   border-radius: 4px;
   cursor: pointer;
@@ -81,7 +81,7 @@ class DocumentBlock extends Component {
   setDocToDelete = d => this.setState({ docToDelete: d });
 
   fileAdded = async (name, file) => {
-    if (!name || !file) return;
+    if (!name || !file || !file.length) return;
     const bodyFormData = new FormData();
     bodyFormData.append('name', name);
     bodyFormData.append('document', file[0]);
