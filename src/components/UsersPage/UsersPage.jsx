@@ -135,7 +135,7 @@ class UsersPage extends PureComponent {
                                     <Icon>update</Icon>
                                   </Tooltip>
                                 </IconButton>
-                              ) : (
+                              ) : n.email === 'admin@admin.com' ? '' : (
                                 <IconButton aria-label="Delete" onClick={() => this.deleteUserButtonClick(n)}>
                                   <Tooltip title="Удалить пользователя" enterDelay={500} placement="left">
                                     <Icon>delete</Icon>
