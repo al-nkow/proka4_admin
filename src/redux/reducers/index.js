@@ -5,6 +5,7 @@ import content from './content';
 import news from './news';
 import reviews from './reviews';
 import faq from './faq';
+import partners from './partners';
 
 export default combineReducers({
   form: formReducer,
@@ -12,5 +13,6 @@ export default combineReducers({
   content,
   news,
   reviews,
-  faq
+  faq,
+  partners
 });

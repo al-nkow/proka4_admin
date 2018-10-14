@@ -124,6 +124,28 @@ class ContentPage extends PureComponent {
                         component={StyledTextField}
                       />
                     </FormRow>
+                    <PartsWrap>
+                      <Part>
+                        <FormRow>
+                          <Field
+                            name="main.sliderLeft"
+                            label="Слайдер слева"
+                            type="text"
+                            component={StyledTextField}
+                          />
+                        </FormRow>
+                      </Part>
+                      <Part>
+                        <FormRow>
+                          <Field
+                            name="main.sliderRight"
+                            label="Слайдер справа"
+                            type="text"
+                            component={StyledTextField}
+                          />
+                        </FormRow>
+                      </Part>
+                    </PartsWrap>
                   </StyledPaper>
 
                   <StyledPaper>
@@ -313,9 +335,17 @@ class ContentPage extends PureComponent {
                         component={StyledTextField}
                       />
                     </FormRow>
+                    {/*<FormRow>*/}
+                      {/*<Field*/}
+                        {/*name="prizes.prize1"*/}
+                        {/*label="1 место"*/}
+                        {/*type="text"*/}
+                        {/*component={StyledTextField}*/}
+                      {/*/>*/}
+                    {/*</FormRow>*/}
                     <FormRow>
                       <Field
-                        name="prizes.prize1"
+                        name="prizes.prize2"
                         label="1 место"
                         type="text"
                         component={StyledTextField}
@@ -323,7 +353,7 @@ class ContentPage extends PureComponent {
                     </FormRow>
                     <FormRow>
                       <Field
-                        name="prizes.prize2"
+                        name="prizes.prize3"
                         label="2 место"
                         type="text"
                         component={StyledTextField}
@@ -331,16 +361,8 @@ class ContentPage extends PureComponent {
                     </FormRow>
                     <FormRow>
                       <Field
-                        name="prizes.prize3"
-                        label="3 место"
-                        type="text"
-                        component={StyledTextField}
-                      />
-                    </FormRow>
-                    <FormRow>
-                      <Field
                         name="prizes.prize4"
-                        label="4,5 место"
+                        label="3 место"
                         type="text"
                         component={StyledTextField}
                       />
@@ -568,6 +590,8 @@ const mapStateToProps = state => ({
     main: {
       info: idx(state, _ => _.content.content.main.info),
       sub: idx(state, _ => _.content.content.main.sub),
+      sliderLeft: idx(state, _ => _.content.content.main.sliderLeft),
+      sliderRight: idx(state, _ => _.content.content.main.sliderRight),
     },
     about: {
       info: idx(state, _ => _.content.content.about.info),

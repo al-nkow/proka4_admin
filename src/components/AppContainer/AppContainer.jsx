@@ -87,6 +87,7 @@ class AppContainer extends PureComponent {
           <MenuItem name="Новости" icon="access_time" link="/news" />
           <MenuItem name="Отзывы" icon="rate_review" link="/reviews" />
           <MenuItem name="Вопросы" icon="face" link="/faq" />
+          <MenuItem name="Партнёры" icon="business_center" link="/partners" />
 
           <Exit onClick={this.exit}>Выход</Exit>
         </Sidebar>

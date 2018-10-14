@@ -16,6 +16,7 @@ import ContentPage from './components/ContentPage';
 import NewsPage from './components/NewsPage';
 import ReviewsPage from './components/ReviewsPage';
 import FaqPage from './components/FaqPage';
+import PartnersPage from './components/PartnersPage';
 
 createApiInstance();
 
@@ -36,6 +37,7 @@ class App extends Component {
                   <Route exact path="/news" component={NewsPage} />
                   <Route exact path="/reviews" component={ReviewsPage} />
                   <Route exact path="/faq" component={FaqPage} />
+                  <Route exact path="/partners" component={PartnersPage} />
                 </Switch>
               </PrivateRoute>
             </Switch>
