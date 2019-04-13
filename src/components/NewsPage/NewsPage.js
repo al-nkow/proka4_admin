@@ -48,7 +48,7 @@ class NewsPage extends PureComponent {
       await this.props.deleteNewsItem(newsToDelete._id);
       this.setState({
         toastType: 'success',
-        toastMessage: 'Новость успешно удалёна',
+        toastMessage: 'Новость успешно удалена',
         openToast: true,
         newsToDelete: ''
       });
