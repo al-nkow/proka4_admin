@@ -18,6 +18,8 @@ import ReviewsPage from './components/ReviewsPage';
 import FaqPage from './components/FaqPage';
 import PartnersPage from './components/PartnersPage';
 import DocsPage from './components/DocsPage';
+import InstaPage from './components/Instagram';
+import MembersPage from './components/MembersPage';
 
 createApiInstance();
 
@@ -40,6 +42,8 @@ class App extends Component {
                   <Route exact path="/faq" component={FaqPage} />
                   <Route exact path="/partners" component={PartnersPage} />
                   <Route exact path="/documents" component={DocsPage} />
+                  <Route exact path="/instagram" component={InstaPage} />
+                  <Route exact path="/members" component={MembersPage} />
                 </Switch>
               </PrivateRoute>
             </Switch>

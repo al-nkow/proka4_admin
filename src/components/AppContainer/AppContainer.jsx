@@ -24,6 +24,8 @@ const Sidebar = styled.div`
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2e3340', endColorstr='#323441',GradientType=0 );
   box-shadow: 0 0 10px rgba(0,0,0,0.4);
   position: relative;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Content = styled.div`
@@ -49,13 +51,18 @@ const Exit = styled.div`
   padding: 20px 40px;
   cursor: pointer;
   color: #ffffff;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  // position: absolute;
+  // bottom: 0;
+  // left: 0;
+  // right: 0;
   &:hover {
     background: rgba(255,255,255,0.2);
   }
+`;
+
+const Buttons = styled.div`
+  min-height: 0;
+  overflow: auto;
 `;
 
 class AppContainer extends PureComponent {
@@ -81,15 +88,18 @@ class AppContainer extends PureComponent {
       <Wrap>
         <Sidebar>
           <SidebarHead><span>Административная панель</span></SidebarHead>
-          <MenuItem name="Аналитика" icon="dashboard" link="/" />
-          <MenuItem name="Контент" icon="create" link="/content" />
-          <MenuItem name="Пользователи" icon="people" link="/users" />
-          <MenuItem name="Новости" icon="access_time" link="/news" />
-          <MenuItem name="Отзывы" icon="rate_review" link="/reviews" />
-          <MenuItem name="Вопросы" icon="face" link="/faq" />
-          <MenuItem name="Партнёры" icon="business_center" link="/partners" />
-          <MenuItem name="Документы" icon="picture_as_pdf" link="/documents" />
-
+          <Buttons>
+            <MenuItem name="Аналитика" icon="dashboard" link="/" />
+            <MenuItem name="Регистрация" icon="accessibility_new" link="/members" />
+            <MenuItem name="Контент" icon="create" link="/content" />
+            <MenuItem name="Пользователи" icon="people" link="/users" />
+            <MenuItem name="Новости" icon="access_time" link="/news" />
+            <MenuItem name="Отзывы" icon="rate_review" link="/reviews" />
+            <MenuItem name="Вопросы" icon="face" link="/faq" />
+            <MenuItem name="Партнёры" icon="business_center" link="/partners" />
+            <MenuItem name="Документы" icon="picture_as_pdf" link="/documents" />
+            <MenuItem name="Instagram" icon="party_mode" link="/instagram" />
+          </Buttons>
           <Exit onClick={this.exit}>Выход</Exit>
         </Sidebar>
         <Content>{this.props.children}</Content>
