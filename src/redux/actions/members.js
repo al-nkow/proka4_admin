@@ -1,4 +1,4 @@
-import { getAllMembers } from '../services/members';
+import { getAllMembers, deleteMember } from '../services/members';
 
 export const GET_MEMBERS_REQUEST = 'GET_MEMBERS_REQUEST';
 export const GET_MEMBERS_SUCCESS = 'GET_MEMBERS_SUCCESS';
@@ -16,5 +16,14 @@ export const getMembersList = data => dispatch => {
     .catch(err => {
       dispatch({ type: GET_MEMBERS_FAIL });
       console.log('GET MEMBERS ERROR: ', err.response);
+    });
+};
+
+export const removeMember = id => dispatch => {
+  return deleteMember(id)
+    .then(res => {
+      console.log('DELETE MEMBER RESULT: ', res);
+      dispatch(getMembersList());
+      return res;
     });
 };

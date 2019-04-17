@@ -130,7 +130,7 @@ class UsersPage extends PureComponent {
                           <TableCell numeric>
                             {
                               n._id === currentUserId ? (
-                                <IconButton aria-label="Delete" onClick={() => this.setUserChangePassword(n)}>
+                                <IconButton aria-label="Change" onClick={() => this.setUserChangePassword(n)}>
                                   <Tooltip title="Изменить пароль" enterDelay={500} placement="left">
                                     <Icon>update</Icon>
                                   </Tooltip>
