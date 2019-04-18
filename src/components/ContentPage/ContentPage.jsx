@@ -101,6 +101,21 @@ class ContentPage extends PureComponent {
 
                   <StyledPaper>
                     <Title>
+                      Номер сезона
+                      <IconButton className="save" color="primary" aria-label="Save" type="submit" disabled={!dirty || submitting || !valid}>
+                        <Icon>save</Icon>
+                      </IconButton>
+                    </Title>
+                    <Field
+                      name="season"
+                      label="Номер активного сезона"
+                      type="text"
+                      component={StyledTextField}
+                    />
+                  </StyledPaper>
+
+                  <StyledPaper>
+                    <Title>
                       Главный блок
                       <IconButton className="save" color="primary" aria-label="Save" type="submit" disabled={!dirty || submitting || !valid}>
                         <Icon>save</Icon>
@@ -587,6 +602,7 @@ const mapStateToProps = state => ({
   content: state.content ? state.content.content : {},
   loadingStatus: state.content ? state.content.loadingStatus : '',
   initialValues: {
+    season: idx(state, _ => _.content.content.season),
     main: {
       info: idx(state, _ => _.content.content.main.info),
       sub: idx(state, _ => _.content.content.main.sub),

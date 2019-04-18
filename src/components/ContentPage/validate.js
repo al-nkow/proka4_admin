@@ -1,7 +1,8 @@
-import { isValidEmail } from '../../utils/validationRules';
+import { isValidEmail, isNumeric } from '../../utils/validationRules';
 
 export default values => {
   const errors = {
+    season: null,
     main: {},
     about: {},
     programs: {
@@ -23,6 +24,14 @@ export default values => {
     },
     contacts: {}
   };
+
+  if (!values.season) {
+    errors.season = 'Это поле обязательно для заполнения';
+  }
+
+  if (values.season && !isNumeric(values.season)) {
+    errors.season = 'Разрешено вводить только цифры';
+  }
 
   if (values.main && !values.main.info) {
     errors.main.info = 'Это поле обязательно для заполнения';

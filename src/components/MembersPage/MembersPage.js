@@ -127,7 +127,7 @@ class MembersPage extends PureComponent {
                           <TableCell component="th" scope="row">
                             {`${member.firstName} ${member.lastName}`}
                           </TableCell>
-                          <TableCell numeric>{member.email}</TableCell>
+                          <TableCell numeric><a href={'mailto:' + member.email}>{member.email}</a></TableCell>
                           <TableCell numeric>{member.phone}</TableCell>
                           <TableCell numeric>
                             <IconButton
