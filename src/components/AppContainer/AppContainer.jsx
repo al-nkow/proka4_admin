@@ -98,7 +98,7 @@ class AppContainer extends PureComponent {
             <MenuItem name="Вопросы" icon="face" link="/faq" />
             <MenuItem name="Партнёры" icon="business_center" link="/partners" />
             <MenuItem name="Документы" icon="picture_as_pdf" link="/documents" />
-            {/*<MenuItem name="Instagram" icon="party_mode" link="/instagram" />*/}
+            <MenuItem name="Instagram" icon="party_mode" link="/instagram" />
           </Buttons>
           <Exit onClick={this.exit}>Выход</Exit>
         </Sidebar>

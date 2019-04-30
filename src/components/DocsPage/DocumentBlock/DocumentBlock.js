@@ -164,7 +164,7 @@ class DocumentBlock extends Component {
                 color="primary"
                 onClick={() => this.setDocToDelete(doc) }
               >
-                <Tooltip title="Удалить партнёра" enterDelay={500} placement="top" >
+                <Tooltip title="Удалить документ" enterDelay={500} placement="top" >
                   <Icon>delete</Icon>
                 </Tooltip>
               </IconButton>

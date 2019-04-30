@@ -8,6 +8,7 @@ import faq from './faq';
 import partners from './partners';
 import documents from './documents';
 import members from './members';
+import instagram from './instagram';
 
 export default combineReducers({
   form: formReducer,
@@ -18,5 +19,6 @@ export default combineReducers({
   faq,
   partners,
   documents,
-  members
+  members,
+  instagram
 });
