@@ -143,7 +143,7 @@ class AddReviewDialog extends React.Component {
   };
 
   handleClose = () => {
-    this.setState({ open: false });
+    this.setState({ open: false, previewObj: '' });
     this.props.dispatch(reset('addReviewForm'));
   };
 
