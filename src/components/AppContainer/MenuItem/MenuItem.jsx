@@ -14,6 +14,9 @@ const theme = createMuiTheme({
 
 const Wrap = styled.div`
   padding: 2px 15px;
+  @media screen and (max-width: 400px) {
+    padding: 2px 5px;
+  }
 `;
 
 const StyledButton = styled(Button)`
@@ -36,6 +39,16 @@ const StyledButton = styled(Button)`
     &.active {
       background-color: #bb6258;
     }
+    @media screen and (max-width: 400px) {
+      padding: 10px;
+      min-width: 0;
+      .icon {
+        margin-right: 0;
+      }
+      .name {
+        display: none;
+      }
+    }
   }
 `;
 
@@ -47,7 +60,7 @@ const MenuItem = (props) => {
         <Link to={link}>
           <StyledButton className={link === pathname ? 'active' : ''}>
             <Icon className="icon">{icon}</Icon>
-            <div>{name}</div>
+            <div className="name">{name}</div>
           </StyledButton>
         </Link>
       </Wrap>

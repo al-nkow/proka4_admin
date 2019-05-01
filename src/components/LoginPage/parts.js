@@ -18,10 +18,14 @@ export const Wrapper = styled.div`
 
 export const Content = styled.div`
   width: 400px;
+  @media screen and (max-width: 440px) {
+    width: 90%;
+  }
 `;
 
 export const LoginForm = styled.div`
   padding: 20px;
+  box-sizing: border-box;
   width: 100%;
   background: #ffffff;
   border-radius: 4px;

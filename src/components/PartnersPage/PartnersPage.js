@@ -21,8 +21,8 @@ export const Error = styled.div`
 
 const PageHead = styled.div`
   height: 40px;
-    font-size: 22px;
-    margin-bottom: 30px;
+  font-size: 22px;
+  margin-bottom: 30px;
 `;
 
 const PartnersWrap = styled.div`

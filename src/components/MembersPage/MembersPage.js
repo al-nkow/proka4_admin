@@ -110,7 +110,7 @@ class MembersPage extends PureComponent {
         <TableWrap>
           {
             membersList ? (
-              <Paper>
+              <Paper style={{overflow: 'auto'}}>
                 <StyledTable>
                   <TableHead>
                     <TableRow>

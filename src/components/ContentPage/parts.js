@@ -57,7 +57,8 @@ export const ProgramBlock = styled.div`
 
 export const PageHead = styled.div`
   height: 40px;
-  padding: 10px;
+  font-size: 22px;
+  margin-bottom: 30px;
 `;
 
 export const StyledPaper = styled(Paper)`

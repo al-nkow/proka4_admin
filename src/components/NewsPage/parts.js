@@ -17,7 +17,8 @@ export const NewsBlock = styled(Paper)`
 
 export const PageHead = styled.div`
   height: 40px;
-  padding: 10px;
+  font-size: 22px;
+  margin-bottom: 30px;
 `;
 
 export const NewsWrap = styled.div`

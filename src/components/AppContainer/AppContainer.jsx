@@ -26,6 +26,10 @@ const Sidebar = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
+  @media screen and (max-width: 400px) {
+    width: 55px;
+    padding-top: 20px;
+  }
 `;
 
 const Content = styled.div`
@@ -33,6 +37,9 @@ const Content = styled.div`
   width: 100%;
   background: #F6F6F6;
   overflow: auto;
+  @media screen and (max-width: 400px) {
+    padding: 15px;
+  }
 `;
 
 const SidebarHead = styled.div`
@@ -44,6 +51,9 @@ const SidebarHead = styled.div`
     color: #ffffff;
     font-size: 14px;
     font-weight: 300;
+  }
+  @media screen and (max-width: 400px) {
+    display: none;
   }
 `;
 
@@ -58,10 +68,15 @@ const Exit = styled.div`
   &:hover {
     background: rgba(255,255,255,0.2);
   }
+  @media screen and (max-width: 400px) {
+    padding: 20px 5px;
+    font-size: 15px;
+  }
 `;
 
 const Buttons = styled.div`
   min-height: 0;
+  height: 100%;
   overflow: auto;
 `;
 
@@ -100,7 +115,9 @@ class AppContainer extends PureComponent {
             <MenuItem name="Документы" icon="picture_as_pdf" link="/documents" />
             <MenuItem name="Instagram" icon="party_mode" link="/instagram" />
           </Buttons>
-          <Exit onClick={this.exit}>Выход</Exit>
+          <Exit onClick={this.exit}>
+            Выход
+          </Exit>
         </Sidebar>
         <Content>{this.props.children}</Content>
       </Wrap>

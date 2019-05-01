@@ -23,7 +23,8 @@ const TableWrap = styled.div`
 
 const PageHead = styled.div`
   height: 40px;
-  padding: 10px;
+  font-size: 22px;
+  margin-bottom: 30px;
 `;
 
 const StyledTable = styled(Table)`
@@ -108,7 +109,7 @@ class UsersPage extends PureComponent {
         <TableWrap>
           {
             usersList ? (
-              <Paper>
+              <Paper style={{ overflow: 'auto' }}>
                 <StyledTable>
                   <TableHead>
                     <TableRow>
